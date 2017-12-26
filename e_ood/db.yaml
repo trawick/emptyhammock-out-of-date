@@ -1,8 +1,8 @@
 ---
 ____TEMPLATE:
   changelog_url: ''
-  compatibility_releases: []
   bug_fix_releases: []
+  compatibility_releases: []
   feature_releases: []
   ignored_releases: []
   security_releases: []

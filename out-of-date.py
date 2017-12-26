@@ -1,6 +1,5 @@
 from __future__ import print_function
 
-import os
 import sys
 
 from e_ood.analyze import Analyzer
@@ -15,13 +14,7 @@ def go(verbose=False):
         env_packages = EnvPackages.from_freeze_file(sys.argv[1], verbose=verbose)
     else:
         env_packages = EnvPackages.from_active_env(verbose=verbose)
-    version_db = VersionDB(
-        os.path.join(
-            os.path.dirname(__file__),
-            'e_ood',
-            'db.yaml'
-        )
-    )
+    version_db = VersionDB()
     analyzer = Analyzer(env_packages, version_info, version_db)
     output = analyzer.run()
     version_info.save()

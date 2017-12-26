@@ -12,7 +12,9 @@ class PackageVersionInfo(object):
     Provide information about versions available on PyPI
     """
 
-    def __init__(self):
+    def __init__(self, max_pypi_age_seconds=None):
+        if max_pypi_age_seconds is None:
+            max_pypi_age_seconds = 60 * 60 * 24
         self.pyold_cache_file = os.path.join(os.environ['HOME'], '.pyold.json')
         try:
             self.pyold_cache = json.load(open(self.pyold_cache_file, 'r'))
@@ -20,9 +22,9 @@ class PackageVersionInfo(object):
             self.pyold_cache = {}
         self.pyold_cache_changed = False
         request_headers = {
-            'User-Agent': 'pyold %s' % e_ood.__version__,
+            'User-Agent': 'emptyhammock-ood %s' % e_ood.__version__,
         }
-        self.max_pypi_age_seconds = 60 * 60 * 24
+        self.max_pypi_age_seconds = max_pypi_age_seconds
         self.current_time_seconds = int(time.time())
         self.pypi_session = requests.Session()
         self.pypi_session.headers.update(request_headers)

@@ -31,4 +31,5 @@ setup(
         'License :: OSI Approved :: Apache 2.0 License',
         'Development Status :: 3 - Alpha',
     ],
+    scripts=('out-of-date.py',),
 )

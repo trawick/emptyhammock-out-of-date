@@ -9,6 +9,9 @@ class EnvPackages(object):
     """
         Grok the packages/versions in the virtualenv and track any problems
         retrieving or understanding their versions.
+
+        Use .from_active_env() or .from_freeze_file() to create an
+        instance.
     """
 
     def __init__(self, verbose=False):
@@ -18,6 +21,10 @@ class EnvPackages(object):
         self.last_returned = -1
 
     def __iter__(self):
+        """
+        Does not support multiple simultaneous iterators!
+        """
+        self.last_returned = -1
         return self
 
     def __next__(self):
