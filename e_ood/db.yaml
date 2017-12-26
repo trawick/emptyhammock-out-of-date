@@ -15,13 +15,11 @@ beautifulsoup4:
   security_releases: []
 bleach:
   changelog_url: ''
-  bug_fix_releases: []
+  bug_fix_releases: [2.1.1, 2.1.2]
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
-  security_releases:
-  - 2.1.1
-  - 2.1.2
+  security_releases: [2.1]
 certifi:
   changelog_url: ''
   bug_fix_releases: [2017.11.5]
