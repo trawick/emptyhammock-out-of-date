@@ -19,7 +19,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     data_files=(
-        ('e_ood', 'e_ood/db.yaml'),
+        ('e_ood', ('e_ood/db.yaml', )),
     ),
     license='Apache 2.0 License',
     version=VERSION,
