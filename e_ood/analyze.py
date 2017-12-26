@@ -11,9 +11,12 @@ class Analyzer(object):
         self.up_to_date = []
         self.messages = []
 
-    def run(self):
+    def analyze(self, ignored_packages=None):
+        ignored_packages = ignored_packages or []
         self.up_to_date = []
         for package_name, current_version in self.env:
+            if package_name in ignored_packages:
+                continue
             data = self.version_info.get(package_name)
             if data is None:
                 self.env.add_error_package(package_name, 'No version information found')

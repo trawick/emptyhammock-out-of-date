@@ -18,7 +18,7 @@ def go(verbose=False):
         env_packages = EnvPackages.from_active_env(verbose=verbose)
     version_db = VersionDB()
     analyzer = Analyzer(env_packages, version_info, version_db)
-    output = analyzer.run()
+    output = analyzer.analyze()
     version_info.save()
 
     print(output)
