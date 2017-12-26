@@ -18,6 +18,9 @@ setup(
     name='emptyhammock_out_of_date',
     packages=find_packages(),
     include_package_data=True,
+    data_files=(
+        ('e_ood', 'e_ood/db.yaml'),
+    ),
     license='Apache 2.0 License',
     version=VERSION,
     description='A Python app and library that analyzes "pip freeze" output',
