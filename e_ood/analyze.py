@@ -1,0 +1,63 @@
+from pkg_resources import parse_version
+
+
+class Analyzer(object):
+
+    def __init__(self, env, version_info, version_db):
+        self.verbose = False
+        self.env = env
+        self.version_info = version_info
+        self.version_db = version_db
+        self.up_to_date = []
+        self.messages = []
+
+    def run(self):
+        self.up_to_date = []
+        for package_name, current_version in self.env:
+            data = self.version_info.get(package_name)
+            if data is None:
+                self.env.add_error_package(package_name, 'No version information found')
+                continue
+            newer = []
+            older = []
+            for pypi_release in data['releases'].keys():
+                try:
+                    pypi_release = parse_version(pypi_release)
+                    if pypi_release > current_version:
+                        newer.append(pypi_release)
+                    elif pypi_release != current_version:
+                        older.append(pypi_release)
+                except:  # noqa
+                    self.env.add_error_package(
+                        package_name,
+                        'Bad version "{}" for {}'.format(pypi_release, package_name)
+                    )
+            try:
+                newer = self.version_db.ignore_releases(package_name, newer, ignore_feature_releases=True)
+            except ValueError:
+                # The lack of an entry for the package will show up later, if there
+                # are indeed newer versions.
+                pass
+            if newer:
+                self.messages.append('%s: %s' % (package_name, current_version))
+                newer = [
+                    str(v)
+                    for v in sorted(newer)
+                ]
+                self.messages.append('Newer releases:')
+                for n in newer:
+                    self.messages.append('  %s: %s' % (n, self.version_db.classify_release(package_name, n)))
+            else:
+                self.up_to_date.append(package_name)
+            if self.verbose and older:
+                if not newer:
+                    self.messages.append('%s: %s' % (package_name, current_version))
+                older = [
+                    str(v)
+                    for v in sorted(older)
+                ]
+                self.messages.append('Older: %s' % ', '.join(older))
+            if newer or (self.verbose and older):
+                self.messages.append('')
+
+        return '\n'.join(self.messages)

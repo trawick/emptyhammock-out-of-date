@@ -1,0 +1,113 @@
+---
+____TEMPLATE:
+  changelog_url: ''
+  compatibility_releases: []
+  bug_fix_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+beautifulsoup4:
+  changelog_url: ''
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: [4.6.0]
+  ignored_releases: []
+  security_releases: []
+bleach:
+  changelog_url: ''
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases:
+  - 2.1.1
+  - 2.1.2
+certifi:
+  changelog_url: ''
+  bug_fix_releases: [2017.11.5]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+chardet:
+  changelog_url: ''
+  bug_fix_releases: [3.0.4]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+click:
+  changelog_url: 'https://github.com/pallets/click/blob/master/CHANGES'
+  bug_fix_releases: [6.7]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+django-dotenv:
+  changelog_url: 'https://github.com/jpadilla/django-dotenv/releases'
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: [1.4.2]
+  ignored_releases: []
+  security_releases: []
+django-mptt:
+  changelog_url: 'https://github.com/django-mptt/django-mptt/blob/master/docs/upgrade.rst'
+  bug_fix_releases: [0.8.7]
+  compatibility_releases: [0.9.0]
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+django-treebeard:
+  changelog_url: 'https://github.com/django-treebeard/django-treebeard/blob/master/CHANGES'
+  bug_fix_releases: [4.1.2]
+  compatibility_releases: [4.2.0]
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+Django:
+  changelog_url: ''
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases:
+  - 2.0
+  ignored_releases: [2.0a1, 2.0b1, 2.0rc1]
+  security_releases: []
+html5lib:
+  changelog_url: ''
+  bug_fix_releases: [0.99999999, 0.999999999, 1.0.1]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: [1.0, 1.0b1, 1.0b2, 1.0b3, 1.0b5, 1.0b6, 1.0b7, 1.0b8, 1.0b9, 1.0b10]
+  security_releases: []
+huey:
+  changelog_url: 'https://github.com/coleifer/huey/blob/master/CHANGELOG.md'
+  bug_fix_releases: [1.5.6]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+odfpy:
+  changelog_url: 'https://github.com/eea/odfpy/releases'
+  bug_fix_releases: [1.3.6]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+openpyxl:
+  changelog_url: 'https://openpyxl.readthedocs.io/en/latest/changes.html'
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases:
+  - 2.5.0a1
+  - 2.5.0a2
+  - 2.5.0a3
+  - 2.5.0b1
+  security_releases: []
+xlwt:
+  changelog_url: ''
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
