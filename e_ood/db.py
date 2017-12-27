@@ -59,16 +59,19 @@ class VersionDB(object):
         return False
 
     @staticmethod
-    def _ignorable(entry, version, ignore_feature_releases):
+    def _ignorable(entry, version, ignore_feature_releases, ignore_compat_releases):
         if version in entry['ignored_releases']:
             return True
         if ignore_feature_releases and version in entry['feature_releases']:
             return True
+        if ignore_compat_releases and version in entry['compatibility_releases']:
+            return True
         return False
 
-    def ignore_releases(self, package_name, versions, ignore_feature_releases=False):
+    def ignore_releases(self, package_name, versions, ignore_feature_releases=False,
+                        ignore_compat_releases=False):
         entry = self._get_entry(package_name)
         return [
             v for v in versions
-            if not self._ignorable(entry, str(v), ignore_feature_releases)
+            if not self._ignorable(entry, str(v), ignore_feature_releases, ignore_compat_releases)
         ]
