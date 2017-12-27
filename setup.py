@@ -3,7 +3,7 @@
 import os
 import sys
 
-from setuptools import find_packages, setup
+from setuptools import setup
 
 import e_ood
 
@@ -16,7 +16,7 @@ if sys.argv[-1] == 'tag':
 
 setup(
     name='emptyhammock_out_of_date',
-    packages=find_packages(),
+    packages=['e_ood'],
     include_package_data=True,
     data_files=(
         ('e_ood', ('e_ood/db.yaml', )),

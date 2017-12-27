@@ -18,18 +18,26 @@ class VersionDB(object):
                 os.path.dirname(__file__),
                 'db.yaml'
             )
-        self.db = yaml.load(
-            open(yaml_db).read(),
-            # some version numbers, such as "2.0", look like float; disable
-            # auto-conversion so that all version numbers are strings
-            Loader=yaml.BaseLoader
-        )
+        with open(yaml_db) as f:
+            self.db = yaml.load(
+                f.read(),
+                # some version numbers, such as "2.0", look like float; disable
+                # auto-conversion so that all version numbers are strings
+                Loader=yaml.BaseLoader
+            )
 
     def _get_entry(self, package_name):
         entry = self.db.get(package_name, None)
         if not entry:
             raise ValueError('No definition for package "%s"' % package_name)
         return entry
+
+    def get_changelog(self, package_name):
+        try:
+            entry = self._get_entry(package_name)
+        except ValueError:
+            return None
+        return entry.get('changelog_url', None) or None
 
     def classify_release(self, package_name, version):
         try:

@@ -55,6 +55,13 @@ django-mptt:
   feature_releases: []
   ignored_releases: []
   security_releases: []
+django-taggit:
+  changelog_url: 'http://django-taggit.readthedocs.io/en/latest/changelog.html'
+  bug_fix_releases: []
+  compatibility_releases: [0.22.2]
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
 django-treebeard:
   changelog_url: 'https://github.com/django-treebeard/django-treebeard/blob/master/CHANGES'
   bug_fix_releases: [4.1.2]

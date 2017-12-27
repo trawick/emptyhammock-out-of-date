@@ -50,6 +50,9 @@ class Analyzer(object):
                 self.messages.append('Newer releases:')
                 for n in newer:
                     self.messages.append('  %s: %s' % (n, self.version_db.classify_release(package_name, n)))
+                changelog = self.version_db.get_changelog(package_name)
+                if changelog:
+                    self.messages.append('  Changelog: %s' % changelog)
             else:
                 self.up_to_date.append(package_name)
             if self.verbose and older:
