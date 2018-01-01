@@ -46,7 +46,7 @@ django-autocomplete-light:
   bug_fix_releases: [3.3.0]
   compatibility_releases: []
   feature_releases: []
-  ignored_releases: [3.3.0rc1]
+  ignored_releases: [3.3.0rc1, 3.3.0rc2]
   security_releases: []
 django-dotenv:
   changelog_url: 'https://github.com/jpadilla/django-dotenv/releases'
