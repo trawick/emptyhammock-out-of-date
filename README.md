@@ -26,6 +26,17 @@ accommodate new Python, Django, or other critical dependencies will be
 listed only in `compatibility_releases`, etc.  From this a report of the most
 critical version issues can be created.
 
+### LTS releases and bug fixes for later non-LTS releases
+
+Django is the obvious example for this.  At the time of this writing, 1.11 is
+the current LTS release and 2.0 is a non-LTS feature release.  1.11.x releases
+are included in `bug_fix_releases` or `security_releases` as appropriate, but
+2.0.x releases are all included in `feature_releases`, like `2.0` itself.  This
+results in out-of-date being reported only for new 1.11.x releases, not for
+new 2.0.x releases.  A better concept, such as a list of LTS releases (e.g.
+`lts_release_patterns: [1\.11\.\d+]`) could be used to avoid this kludge.
+(The pattern for 1.11.x would be removed once it is no longer supported.)
+
 ## Dependencies
 
 Python 2.7 and Python 3.x from Ubuntu >= 16.04 are supported.

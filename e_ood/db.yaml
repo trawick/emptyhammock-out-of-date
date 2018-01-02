@@ -77,11 +77,10 @@ django-treebeard:
   ignored_releases: []
   security_releases: []
 Django:
-  changelog_url: ''
-  bug_fix_releases: []
+  changelog_url: 'https://docs.djangoproject.com/en/2.0/releases/'
+  bug_fix_releases: [1.11.9]
   compatibility_releases: []
-  feature_releases:
-  - 2.0
+  feature_releases: [2.0, 2.0.1]
   ignored_releases: [2.0a1, 2.0b1, 2.0rc1]
   security_releases: []
 html5lib:
@@ -129,6 +128,13 @@ openpyxl:
   - 2.5.0a2
   - 2.5.0a3
   - 2.5.0b1
+  security_releases: []
+Pillow:
+  changelog_url: 'https://github.com/python-pillow/Pillow/blob/master/CHANGES.rst'
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: [5.0.0]
+  ignored_releases: []
   security_releases: []
 python-dateutil:
   changelog_url: 'https://github.com/dateutil/dateutil/blob/master/NEWS'
