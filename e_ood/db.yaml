@@ -98,8 +98,8 @@ huey:
   ignored_releases: []
   security_releases: []
 Markdown:
-  changelog_url: 'https://github.com/Python-Markdown/markdown/releases'
-  bug_fix_releases: [2.6.8, 2.6.9, 2.6.10]
+  changelog_url: 'https://github.com/Python-Markdown/markdown/blob/master/docs/change_log/index.md'
+  bug_fix_releases: [2.6.8, 2.6.9, 2.6.10, 2.6.11]
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
