@@ -1,4 +1,5 @@
 import os
+import re
 
 import yaml
 
@@ -11,6 +12,8 @@ class VersionDB(object):
         ('feature_releases', 'Adds new features'),
         ('security_releases', 'SECURITY'),
     )
+
+    ALPHA_BETA_RC = re.compile(r'^[0-9.]+(a|b|rc)\d+$')
 
     def __init__(self, yaml_db=None):
         if not yaml_db:
@@ -58,20 +61,22 @@ class VersionDB(object):
                 return True
         return False
 
-    @staticmethod
-    def _ignorable(entry, version, ignore_feature_releases, ignore_compat_releases):
+    def _ignorable(self, entry, version, ignore_feature_releases, ignore_compat_releases, ignore_alpha_beta_rc_releases):
         if version in entry['ignored_releases']:
             return True
         if ignore_feature_releases and version in entry['feature_releases']:
             return True
         if ignore_compat_releases and version in entry['compatibility_releases']:
             return True
+        if ignore_alpha_beta_rc_releases and self.ALPHA_BETA_RC.match(version):
+            return True
+
         return False
 
     def ignore_releases(self, package_name, versions, ignore_feature_releases=False,
-                        ignore_compat_releases=False):
+                        ignore_compat_releases=False, ignore_alpha_beta_rc_releases=True):
         entry = self._get_entry(package_name)
         return [
             v for v in versions
-            if not self._ignorable(entry, str(v), ignore_feature_releases, ignore_compat_releases)
+            if not self._ignorable(entry, str(v), ignore_feature_releases, ignore_compat_releases, ignore_alpha_beta_rc_releases)
         ]

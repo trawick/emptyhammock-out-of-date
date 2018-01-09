@@ -4,13 +4,14 @@ from pkg_resources import parse_version
 class Analyzer(object):
 
     def __init__(self, env, version_info, version_db, ignore_feature_releases=True,
-                 ignore_compat_releases=True):
+                 ignore_compat_releases=True, ignore_alpha_beta_rc_releases=True):
         self.verbose = False
         self.env = env
         self.version_info = version_info
         self.version_db = version_db
         self.ignore_feature_releases = ignore_feature_releases
         self.ignore_compat_releases = ignore_compat_releases
+        self.ignore_alpha_beta_rc_releases = ignore_alpha_beta_rc_releases
         self.up_to_date = []
         self.messages = []
 
@@ -43,6 +44,7 @@ class Analyzer(object):
                     package_name, newer,
                     ignore_feature_releases=self.ignore_feature_releases,
                     ignore_compat_releases=self.ignore_compat_releases,
+                    ignore_alpha_beta_rc_releases=self.ignore_alpha_beta_rc_releases,
                 )
             except ValueError:
                 # The lack of an entry for the package will show up later, if there
