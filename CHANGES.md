@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## Version 0.1.15
+
+* Windows platform: Fix bug finding user directory (for finding `.pyold.json`).
+
 ## Version 0.1.14
 
 * Available alpha/beta/release-candidate releases are ignored by default when

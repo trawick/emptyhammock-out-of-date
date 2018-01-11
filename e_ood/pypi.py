@@ -15,7 +15,8 @@ class PackageVersionInfo(object):
     def __init__(self, max_pypi_age_seconds=None):
         if max_pypi_age_seconds is None:
             max_pypi_age_seconds = 60 * 60 * 24
-        self.pyold_cache_file = os.path.join(os.environ['HOME'], '.pyold.json')
+        user_path = os.path.expanduser('~')
+        self.pyold_cache_file = os.path.join(user_path, '.pyold.json')
         try:
             self.pyold_cache = json.load(open(self.pyold_cache_file, 'r'))
         except:  # noqa
