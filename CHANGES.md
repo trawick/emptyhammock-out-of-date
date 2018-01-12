@@ -2,6 +2,7 @@
 
 ## Version 0.1.15 (not yet released)
 
+* Updates to the default package db
 * `setup.py`: Specify dependencies `requests` and `PyYAML` as dependencies.
 * Windows platform: Fix bug finding user directory (for finding `.pyold.json`).
 

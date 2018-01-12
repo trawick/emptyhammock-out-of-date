@@ -14,7 +14,7 @@ beautifulsoup4:
   ignored_releases: []
   security_releases: []
 bleach:
-  changelog_url: ''
+  changelog_url: 'https://github.com/mozilla/bleach/blob/master/CHANGES'
   bug_fix_releases: [2.1.1, 2.1.2]
   compatibility_releases: []
   feature_releases: []
@@ -97,6 +97,13 @@ huey:
   feature_releases: []
   ignored_releases: []
   security_releases: []
+jedi:
+  changelog_url: 'https://github.com/davidhalter/jedi/blob/master/CHANGELOG.rst'
+  bug_fix_releases: [0.11.1]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
 Markdown:
   changelog_url: 'https://github.com/Python-Markdown/markdown/blob/master/docs/change_log/index.md'
   bug_fix_releases: [2.6.8, 2.6.9, 2.6.10, 2.6.11]
@@ -125,6 +132,13 @@ openpyxl:
   feature_releases: []
   ignored_releases: []
   security_releases: []
+pexpect:
+  changelog_url: 'https://github.com/pexpect/pexpect/blob/master/doc/history.rst'
+  bug_fix_releases: [4.3.1]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
 Pillow:
   changelog_url: 'https://github.com/python-pillow/Pillow/blob/master/CHANGES.rst'
   bug_fix_releases: []
@@ -137,6 +151,20 @@ python-dateutil:
   bug_fix_releases: [2.6.1]
   compatibility_releases: []
   feature_releases: []
+  ignored_releases: []
+  security_releases: []
+readme-renderer:
+  changelog_url: 'https://github.com/pypa/readme_renderer/blob/master/CHANGES.rst'
+  bug_fix_releases: [17.0, 17.1, 17.2]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+restview:
+  changelog_url: 'https://github.com/mgedmin/restview/blob/master/CHANGES.rst'
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: [2.8.0]
   ignored_releases: []
   security_releases: []
 six:
