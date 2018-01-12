@@ -1,7 +1,8 @@
 # Changes and migration requirements
 
-## Version 0.1.15
+## Version 0.1.15 (not yet released)
 
+* `setup.py`: Specify dependencies `requests` and `PyYAML` as dependencies.
 * Windows platform: Fix bug finding user directory (for finding `.pyold.json`).
 
 ## Version 0.1.14
