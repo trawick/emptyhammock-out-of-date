@@ -2,6 +2,8 @@
 
 ## Version 0.1.15 (not yet released)
 
+* PyPI interface now caches package-not-found (404 error from PyPI).
+* PyPI logs a non-200/non-404 result instead of printing to stdout.
 * Updates to the default package db
 * `setup.py`: Specify dependencies `requests` and `PyYAML` as dependencies.
 * Windows platform: Fix bug finding user directory (for finding `.pyold.json`).

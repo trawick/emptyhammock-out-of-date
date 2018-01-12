@@ -1,10 +1,14 @@
 import json
+import logging
 import os
 import time
 
 import requests
 
 import e_ood
+
+
+logger = logging.getLogger(__name__)
 
 
 class PackageVersionInfo(object):
@@ -35,7 +39,6 @@ class PackageVersionInfo(object):
             json.dump(self.pyold_cache, open(self.pyold_cache_file, 'w'))
 
     def get(self, package_name):
-
         if package_name in self.pyold_cache:
             retrieved = self.pyold_cache[package_name].get('retrieved')
             out_of_date = \
@@ -48,11 +51,16 @@ class PackageVersionInfo(object):
         if package_name not in self.pyold_cache:
             url = 'https://pypi.python.org/pypi/%s/json' % package_name
             result = self.pypi_session.get(url)
-            if result.status_code != 200:
-                print('{} => {}'.format(url, result.status_code))
+            if result.status_code not in (200, 404):
+                logger.error(
+                    'Received status code %s looking up package "%s"',
+                    result.status_code, package_name
+                )
                 return None
             self.pyold_cache[package_name] = {
-                'from_pypi': json.loads(result.content.decode('utf-8')),
+                'from_pypi':
+                    json.loads(result.content.decode('utf-8'))
+                    if result.status_code == 200 else None,
                 'retrieved': self.current_time_seconds,
             }
             self.pyold_cache_changed = True
