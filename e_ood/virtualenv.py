@@ -61,11 +61,15 @@ class EnvPackages(object):
         lister = kwargs.pop('lister')
         env_packages = EnvPackages(*args, **kwargs)
         for line in lister():
-            line = line.rstrip()
+            line = line.strip()
             try:
                 package_name, current_version = line.split('==')
             except ValueError:
-                raise ValueError('Could not parse package/version "%s"' % line)
+                env_packages.add_error_package(
+                    line,
+                    'Could not parse package/version "%s"' % line,
+                )
+                continue
             try:
                 current_version = parse_version(current_version)
                 env_packages.add(package_name, current_version)
