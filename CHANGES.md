@@ -2,6 +2,8 @@
 
 ## Version 0.1.15 (not yet released)
 
+* `EnvPackages()` raises a better exception when a package/version string can't
+  be parsed.
 * PyPI interface now caches package-not-found (404 error from PyPI).
 * PyPI logs a non-200/non-404 result instead of printing to stdout.
 * Updates to the default package db

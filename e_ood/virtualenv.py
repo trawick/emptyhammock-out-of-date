@@ -57,12 +57,15 @@ class EnvPackages(object):
                 yield line
 
     @classmethod
-    def from_active_env(cls, *args, **kwargs):
+    def _parse_package_list(cls, *args, **kwargs):
+        lister = kwargs.pop('lister')
         env_packages = EnvPackages(*args, **kwargs)
-        process = Popen(['pip', 'freeze'], stdout=PIPE)
-        for line in cls.get_process_output(process):
+        for line in lister():
             line = line.rstrip()
-            package_name, current_version = line.split('==')
+            try:
+                package_name, current_version = line.split('==')
+            except ValueError:
+                raise ValueError('Could not parse package/version "%s"' % line)
             try:
                 current_version = parse_version(current_version)
                 env_packages.add(package_name, current_version)
@@ -74,17 +77,20 @@ class EnvPackages(object):
         return env_packages
 
     @classmethod
+    def from_active_env(cls, *args, **kwargs):
+        process = Popen(['pip', 'freeze'], stdout=PIPE)
+
+        def lister():
+            for line in cls.get_process_output(process):
+                yield line
+
+        return cls._parse_package_list(*args, lister=lister, **kwargs)
+
+    @classmethod
     def from_freeze_file(cls, freeze_file, *args, **kwargs):
-        env_packages = EnvPackages(*args, **kwargs)
-        for line in io.open(freeze_file, encoding='utf-8').readlines():
-            line = line.rstrip()
-            package_name, current_version = line.split('==')
-            try:
-                current_version = parse_version(current_version)
-                env_packages.add(package_name, current_version)
-            except ValueError:
-                env_packages.add_error_package(
-                    package_name,
-                    'Bad version "%s" for %s' % (current_version, package_name)
-                )
-        return env_packages
+
+        def lister():
+            for line in io.open(freeze_file, encoding='utf-8').readlines():
+                yield line
+
+        return cls._parse_package_list(*args, lister=lister, **kwargs)
