@@ -94,7 +94,8 @@ huey:
   changelog_url: 'https://github.com/coleifer/huey/blob/master/CHANGELOG.md'
   bug_fix_releases: [1.5.6]
   compatibility_releases: []
-  feature_releases: []
+# ignored bug fix in 1.6.0: "Fixed bug in serialization of task exceptions."
+  feature_releases: [1.6.0]
   ignored_releases: []
   security_releases: []
 jedi:

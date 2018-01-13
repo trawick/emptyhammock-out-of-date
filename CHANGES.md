@@ -1,6 +1,6 @@
 # Changes and migration requirements
 
-## Version 0.1.15 (not yet released)
+## Version 0.1.15
 
 * `EnvPackages()` recovers when a package/version string can't be parsed.
 * PyPI interface now caches package-not-found (404 error from PyPI).
