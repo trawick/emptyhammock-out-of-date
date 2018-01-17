@@ -55,6 +55,13 @@ django-dotenv:
   feature_releases: [1.4.2]
   ignored_releases: []
   security_releases: []
+django-js-asset:
+  changelog_url: 'https://github.com/matthiask/django-js-asset/blob/master/CHANGELOG.rst'
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: [1.0.0]
+  ignored_releases: []
+  security_releases: []
 django-mptt:
   changelog_url: 'https://github.com/django-mptt/django-mptt/blob/master/docs/upgrade.rst'
   bug_fix_releases: [0.8.7]

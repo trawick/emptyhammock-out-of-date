@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## Version 0.1.16
+
+* Updates to the default package db
+
 ## Version 0.1.15
 
 * `EnvPackages()` recovers when a package/version string can't be parsed.
