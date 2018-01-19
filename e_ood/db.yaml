@@ -22,7 +22,7 @@ bleach:
   security_releases: [2.1]
 certifi:
   changelog_url: ''
-  bug_fix_releases: [2017.11.5]
+  bug_fix_releases: [2017.11.5, 2018.1.18]
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
