@@ -142,7 +142,7 @@ odfpy:
   security_releases: []
 openpyxl:
   changelog_url: 'https://openpyxl.readthedocs.io/en/latest/changes.html'
-  bug_fix_releases: []
+  bug_fix_releases: [2.4.10]
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
