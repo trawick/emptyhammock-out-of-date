@@ -69,6 +69,13 @@ django-mptt:
   feature_releases: []
   ignored_releases: []
   security_releases: []
+django-polymorphic:
+  changelog_url: 'https://github.com/django-polymorphic/django-polymorphic/blob/master/docs/changelog.rst'
+  bug_fix_releases: [2.0]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
 django-solo:
   changelog_url: 'https://github.com/lazybird/django-solo/blob/master/CHANGES'
   bug_fix_releases: [1.1.3]
