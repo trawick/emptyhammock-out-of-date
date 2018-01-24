@@ -1,24 +1,8 @@
 # Changes and migration requirements
 
-## Version 0.1.20
+## Versions 0.1.16 through 0.1.21
 
-* Updates to the default package db
-
-## Version 0.1.19
-
-* Updates to the default package db
-
-## Version 0.1.18
-
-* Updates to the default package db
-
-## Version 0.1.17
-
-* Updates to the default package db
-
-## Version 0.1.16
-
-* Updates to the default package db
+* Updates to the default package db (only)
 
 ## Version 0.1.15
 
