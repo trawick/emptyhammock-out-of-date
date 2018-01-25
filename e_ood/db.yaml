@@ -147,6 +147,13 @@ odfpy:
   feature_releases: []
   ignored_releases: []
   security_releases: []
+olefile:
+  changelog_url: 'https://github.com/decalage2/olefile/blob/master/CHANGELOG.md'
+  bug_fix_releases: [0.45]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
 openpyxl:
   changelog_url: 'https://openpyxl.readthedocs.io/en/latest/changes.html'
   bug_fix_releases: [2.4.10, 2.4.11]
