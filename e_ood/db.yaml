@@ -116,7 +116,8 @@ huey:
   bug_fix_releases: [1.5.6]
   compatibility_releases: []
 # ignored bug fix in 1.6.0: "Fixed bug in serialization of task exceptions."
-  feature_releases: [1.6.0]
+# 1.6.1 only fixes a bug in 1.6.0
+  feature_releases: [1.6.0, 1.6.1]
   ignored_releases: []
   security_releases: []
 jedi:
@@ -149,7 +150,7 @@ odfpy:
   security_releases: []
 olefile:
   changelog_url: 'https://github.com/decalage2/olefile/blob/master/CHANGELOG.md'
-  bug_fix_releases: [0.45]
+  bug_fix_releases: [0.45, 0.45.1]
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
