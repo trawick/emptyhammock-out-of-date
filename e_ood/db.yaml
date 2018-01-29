@@ -43,7 +43,7 @@ click:
   security_releases: []
 djangocms-text-ckeditor:
   changelog_url: 'https://github.com/divio/djangocms-text-ckeditor/blob/master/CHANGELOG.rst'
-  bug_fix_releases: []
+  bug_fix_releases: [3.5.3]
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
