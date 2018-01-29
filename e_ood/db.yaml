@@ -41,6 +41,13 @@ click:
   feature_releases: []
   ignored_releases: []
   security_releases: []
+djangocms-text-ckeditor:
+  changelog_url: 'https://github.com/divio/djangocms-text-ckeditor/blob/master/CHANGELOG.rst'
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
 django-autocomplete-light:
   changelog_url: 'https://github.com/yourlabs/django-autocomplete-light/blob/master/CHANGELOG'
   bug_fix_releases: [3.3.0]
