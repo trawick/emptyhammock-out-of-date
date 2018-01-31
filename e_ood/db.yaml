@@ -225,6 +225,13 @@ social-auth-core:
   feature_releases: []
   ignored_releases: []
   security_releases: [1.5.0]
+twilio:
+  changelog_url: 'https://github.com/twilio/twilio-python/blob/master/CHANGES.md'
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: [6.10.2]
+  ignored_releases: []
+  security_releases: []
 Unidecode:
   changelog_url: 'https://github.com/avian2/unidecode/blob/master/ChangeLog'
   bug_fix_releases: [1.0.22]

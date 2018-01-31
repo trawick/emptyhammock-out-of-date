@@ -1,6 +1,6 @@
 # Changes and migration requirements
 
-## Versions 0.1.16 through 0.1.24
+## Versions 0.1.16 through 0.1.25
 
 * Updates to the default package db (only)
 
