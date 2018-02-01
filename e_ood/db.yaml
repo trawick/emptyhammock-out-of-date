@@ -115,9 +115,12 @@ Django:
   changelog_url: 'https://docs.djangoproject.com/en/2.0/releases/'
   bug_fix_releases: [1.11.9]
   compatibility_releases: []
-  feature_releases: [2.0, 2.0.1]
+# Until e-o-o-d supports an LTS concept, 2.0.x bug fixes releases are being
+# referred to as "feature" releases, as they aren't interesting to 1.11.x
+# projects.
+  feature_releases: [2.0, 2.0.1, 2.0.2]
   ignored_releases: []
-  security_releases: []
+  security_releases: [1.11.10]
 html5lib:
   changelog_url: ''
   bug_fix_releases: [0.99999999, 0.999999999, 1.0.1]
