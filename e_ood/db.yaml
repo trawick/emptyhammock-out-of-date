@@ -55,6 +55,13 @@ django-autocomplete-light:
   feature_releases: []
   ignored_releases: []
   security_releases: []
+django-cms:
+  changelog_url: 'https://github.com/divio/django-cms/blob/develop/CHANGELOG.txt'
+  bug_fix_releases: [3.5.0]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
 django-dotenv:
   changelog_url: 'https://github.com/jpadilla/django-dotenv/releases'
   bug_fix_releases: []
