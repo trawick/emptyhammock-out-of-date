@@ -85,7 +85,7 @@ django-mptt:
   security_releases: []
 django-polymorphic:
   changelog_url: 'https://github.com/django-polymorphic/django-polymorphic/blob/master/docs/changelog.rst'
-  bug_fix_releases: [2.0]
+  bug_fix_releases: [2.0, 2.0.1, 2.0.2]
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
