@@ -41,6 +41,16 @@ click:
   feature_releases: []
   ignored_releases: []
   security_releases: []
+Django:
+  changelog_url: 'https://docs.djangoproject.com/en/2.0/releases/'
+  bug_fix_releases: [1.11.9]
+  compatibility_releases: []
+# Until e-o-o-d supports an LTS concept, 2.0.x bug fixes releases are being
+# referred to as "feature" releases, as they aren't interesting to 1.11.x
+# projects.
+  feature_releases: [2.0, 2.0.1, 2.0.2]
+  ignored_releases: []
+  security_releases: [1.11.10]
 djangocms-text-ckeditor:
   changelog_url: 'https://github.com/divio/djangocms-text-ckeditor/blob/master/CHANGELOG.rst'
   bug_fix_releases: [3.5.3]
@@ -90,6 +100,13 @@ django-polymorphic:
   feature_releases: []
   ignored_releases: []
   security_releases: []
+django-recaptcha:
+  changelog_url: 'https://github.com/praekelt/django-recaptcha/blob/develop/CHANGELOG.rst'
+  bug_fix_releases: []
+  compatibility_releases: [1.4.0]
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
 django-solo:
   changelog_url: 'https://github.com/lazybird/django-solo/blob/master/CHANGES'
   bug_fix_releases: [1.1.3]
@@ -111,16 +128,6 @@ django-treebeard:
   feature_releases: []
   ignored_releases: []
   security_releases: []
-Django:
-  changelog_url: 'https://docs.djangoproject.com/en/2.0/releases/'
-  bug_fix_releases: [1.11.9]
-  compatibility_releases: []
-# Until e-o-o-d supports an LTS concept, 2.0.x bug fixes releases are being
-# referred to as "feature" releases, as they aren't interesting to 1.11.x
-# projects.
-  feature_releases: [2.0, 2.0.1, 2.0.2]
-  ignored_releases: []
-  security_releases: [1.11.10]
 html5lib:
   changelog_url: ''
   bug_fix_releases: [0.99999999, 0.999999999, 1.0.1]
@@ -134,7 +141,7 @@ huey:
   compatibility_releases: []
 # ignored bug fix in 1.6.0: "Fixed bug in serialization of task exceptions."
 # 1.6.1 only fixes a bug in 1.6.0
-  feature_releases: [1.6.0, 1.6.1]
+  feature_releases: [1.6.0, 1.6.1, 1.7.0]
   ignored_releases: []
   security_releases: []
 jedi:
@@ -191,6 +198,13 @@ Pillow:
   bug_fix_releases: []
   compatibility_releases: []
   feature_releases: [5.0.0]
+  ignored_releases: []
+  security_releases: []
+psycopg2:
+  changelog_url: 'http://initd.org/psycopg/docs/news.html'
+  bug_fix_releases: [2.7.4]
+  compatibility_releases: []
+  feature_releases: []
   ignored_releases: []
   security_releases: []
 python-dateutil:
