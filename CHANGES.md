@@ -1,5 +1,11 @@
 # Changes and migration requirements
 
+## Version 0.1.30
+
+* Fix a bug that could result in the last package listed in the virtualenv
+  being reported twice.
+* six is now a required dependency
+
 ## Versions 0.1.16 through 0.1.29
 
 * Updates to the default package db (only)
