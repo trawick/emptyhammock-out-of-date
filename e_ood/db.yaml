@@ -253,7 +253,7 @@ twilio:
   changelog_url: 'https://github.com/twilio/twilio-python/blob/master/CHANGES.md'
   bug_fix_releases: []
   compatibility_releases: []
-  feature_releases: [6.10.2]
+  feature_releases: [6.10.2, 6.10.3]
   ignored_releases: []
   security_releases: []
 Unidecode:
@@ -263,6 +263,13 @@ Unidecode:
   feature_releases: []
   ignored_releases: []
   security_releases: []
+uWSGI:
+  changelog_url: 'https://uwsgi-docs.readthedocs.io/en/latest/search.html?q=changes'
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: [2.0.16]
 xlwt:
   changelog_url: ''
   bug_fix_releases: []
