@@ -144,6 +144,13 @@ huey:
   feature_releases: [1.6.0, 1.6.1, 1.7.0]
   ignored_releases: []
   security_releases: []
+icalendar:
+  changelog_url: 'https://github.com/collective/icalendar/blob/master/CHANGES.rst'
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: [4.0.1]
+  ignored_releases: []
+  security_releases: []
 jedi:
   changelog_url: 'https://github.com/davidhalter/jedi/blob/master/CHANGELOG.rst'
   bug_fix_releases: [0.11.1]
