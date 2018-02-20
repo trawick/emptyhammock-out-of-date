@@ -1,8 +1,8 @@
 # Changes and migration requirements
 
-## Version 0.1.31
+## Version 0.1.31 through 0.1.32
 
-* Updates to the default package db
+* Updates to the default package db (only)
 
 ## Version 0.1.30
 
