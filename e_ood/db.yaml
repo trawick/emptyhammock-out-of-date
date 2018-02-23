@@ -135,6 +135,13 @@ django-treebeard:
   feature_releases: []
   ignored_releases: []
   security_releases: []
+django-webpack-loader:
+  changelog_url: 'https://github.com/ezhome/django-webpack-loader/blob/master/CHANGELOG.md'
+  bug_fix_releases: [0.6.0]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
 html5lib:
   changelog_url: ''
   bug_fix_releases: [0.99999999, 0.999999999, 1.0.1]
