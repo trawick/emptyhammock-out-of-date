@@ -67,7 +67,7 @@ class VersionDB(object):
                 return True
         return False
 
-    def _ignorable(self, entry, version, ignore_feature_releases,
+    def _ignorable(self, entry, current_version, version, ignore_feature_releases,
                    ignore_compat_releases, ignore_alpha_beta_rc_releases):
         if version in entry['ignored_releases']:
             return True
@@ -78,13 +78,22 @@ class VersionDB(object):
         if ignore_alpha_beta_rc_releases and self.ALPHA_BETA_RC.match(version):
             return True
 
+        # If the current_version is an LTS release and the version being checked
+        # doesn't match, then it must be higher -- and we don't care about it.
+        for pat in entry['lts_release_patterns']:
+            pat = r'^' + pat + '$'
+            if re.match(pat, current_version):
+                if not re.match(pat, version):
+                    return True
+
         return False
 
-    def ignore_releases(self, package_name, versions, ignore_feature_releases=False,
+    def ignore_releases(self, package_name, current_version, versions,
+                        ignore_feature_releases=False,
                         ignore_compat_releases=False, ignore_alpha_beta_rc_releases=True):
         entry = self._get_entry(package_name)
         return [
             v for v in versions
-            if not self._ignorable(entry, str(v), ignore_feature_releases,
+            if not self._ignorable(entry, current_version, str(v), ignore_feature_releases,
                                    ignore_compat_releases, ignore_alpha_beta_rc_releases)
         ]

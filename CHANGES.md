@@ -1,5 +1,12 @@
 # Changes and migration requirements
 
+## Version 0.1.34
+
+* Add "LTS release" concept.  If the current version of a package matches a
+  configured LTS release for the package, any fixes for later releases won't
+  be considered applicable.
+* Updates to the default package db
+
 ## Version 0.1.31 through 0.1.33
 
 * Updates to the default package db (only)
