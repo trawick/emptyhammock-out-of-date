@@ -17,18 +17,23 @@ class VersionDB(object):
     ALPHA_BETA_RC = re.compile(r'^[0-9.]+(a|b|rc)\d+$')
 
     def __init__(self, yaml_db=None):
-        if not yaml_db:
-            yaml_db = os.path.join(
-                os.path.dirname(__file__),
-                'db.yaml'
-            )
-        with open(yaml_db) as f:
-            self.db = yaml.load(
-                f.read(),
-                # some version numbers, such as "2.0", look like float; disable
-                # auto-conversion so that all version numbers are strings
-                Loader=yaml.BaseLoader
-            )
+        if yaml_db is not None and callable(getattr(yaml_db, 'read')):
+            yaml_contents = yaml_db.read()
+        else:
+            if not yaml_db:
+                yaml_db = os.path.join(
+                    os.path.dirname(__file__),
+                    'db.yaml'
+                )
+            with open(yaml_db) as f:
+                yaml_contents = f.read()
+
+        self.db = yaml.load(
+            yaml_contents,
+            # some version numbers, such as "2.0", look like float; disable
+            # auto-conversion so that all version numbers are strings
+            Loader=yaml.BaseLoader
+        )
 
     def _get_entry(self, package_name):
         entry = self.db.get(package_name, None)
