@@ -8,7 +8,8 @@ class VersionDB(object):
 
     MAPPINGS = (
         ('bug_fix_releases', 'Non-security bug fixes'),
-        ('compatibility_releases', 'Adds compatibility for a new version of Python, Django, or other important package'),
+        ('compatibility_releases',
+         'Adds compatibility for a new version of Python, Django, or other important package'),
         ('feature_releases', 'Adds new features'),
         ('security_releases', 'SECURITY'),
     )
@@ -61,7 +62,8 @@ class VersionDB(object):
                 return True
         return False
 
-    def _ignorable(self, entry, version, ignore_feature_releases, ignore_compat_releases, ignore_alpha_beta_rc_releases):
+    def _ignorable(self, entry, version, ignore_feature_releases,
+                   ignore_compat_releases, ignore_alpha_beta_rc_releases):
         if version in entry['ignored_releases']:
             return True
         if ignore_feature_releases and version in entry['feature_releases']:
@@ -78,5 +80,6 @@ class VersionDB(object):
         entry = self._get_entry(package_name)
         return [
             v for v in versions
-            if not self._ignorable(entry, str(v), ignore_feature_releases, ignore_compat_releases, ignore_alpha_beta_rc_releases)
+            if not self._ignorable(entry, str(v), ignore_feature_releases,
+                                   ignore_compat_releases, ignore_alpha_beta_rc_releases)
         ]
