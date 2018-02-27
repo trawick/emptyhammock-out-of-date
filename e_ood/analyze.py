@@ -39,9 +39,10 @@ class Analyzer(object):
                         package_name,
                         'Bad version "{}" for {}'.format(pypi_release, package_name)
                     )
+            current_version = str(current_version).lstrip('=')
             try:
                 newer = self.version_db.ignore_releases(
-                    package_name, newer,
+                    package_name, current_version, newer,
                     ignore_feature_releases=self.ignore_feature_releases,
                     ignore_compat_releases=self.ignore_compat_releases,
                     ignore_alpha_beta_rc_releases=self.ignore_alpha_beta_rc_releases,

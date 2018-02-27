@@ -24,7 +24,7 @@ class EnvPackages(object):
         """
         Does not support multiple simultaneous iterators!
         """
-        self.last_returned = -1
+        self.last_returned = 0
         return self
 
     def __next__(self):
@@ -93,8 +93,15 @@ class EnvPackages(object):
     @classmethod
     def from_freeze_file(cls, freeze_file, *args, **kwargs):
 
+        readlines = getattr(freeze_file, "readlines", None)
+        if not callable(readlines):
+            freeze_file = io.open(freeze_file, encoding='utf-8')
+
         def lister():
-            for line in io.open(freeze_file, encoding='utf-8').readlines():
+            for line in freeze_file.readlines():
                 yield line
 
-        return cls._parse_package_list(*args, lister=lister, **kwargs)
+        try:
+            return cls._parse_package_list(*args, lister=lister, **kwargs)
+        finally:
+            freeze_file.close()
