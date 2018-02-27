@@ -3,9 +3,9 @@
 ## Synopsis
 
 Report newer available versions of Python packages in an environment, classified
-by the criticality of the update.  This is based on examination of the environment
-(or the equivalent of `pip freeze`), a database that classifies releases by
-criticality, and access to PyPI.
+by the criticality of the update.  This is based on examination of the current
+environment (or the equivalent of `pip freeze` from a different environment), a
+database that classifies releases by criticality, and access to PyPI.
 
 ## Target audience
 
@@ -31,7 +31,7 @@ my-package-name:
   feature_releases: []
   ignored_releases: []
   security_releases: []
-  lts_release_patterns: []
+  lts_releases: []
 ```
 
 Any release of the package with a security fix will be listed **only** in
@@ -52,7 +52,11 @@ Thus, if an environment is using 1.11.x (i.e., using the LTS release), then
 only newer bug or security fix releases in the 1.11 series will be considered
 critical.
 
-The pattern for an LTS release must be removed once it is no longer supported.
+Using Django 1.11 as an example again, the LTS release is specified as `1.11.`,
+which will match `1.11.anything`.  As an LTS release specification doesn't have
+an expiration date, the spec must be removed once the release is no longer
+supported to avoid suppressing information about relevant newer releases for
+environments still using the out-of-date LTS release.
 
 ## Dependencies
 

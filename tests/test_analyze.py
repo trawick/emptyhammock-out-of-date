@@ -25,7 +25,7 @@ class TestAnalyze(unittest.TestCase):
   feature_releases: []
   ignored_releases: []
   security_releases: [1.11.10, 2.0.2]
-  lts_release_patterns: [1\.11\.\d+]
+  lts_releases: [1.11.]
 """
         env = EnvPackages.from_freeze_file(StringIO('d===1.11.5'))
         version_db = VersionDB(yaml_db=StringIO(db_text))

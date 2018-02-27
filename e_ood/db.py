@@ -80,11 +80,10 @@ class VersionDB(object):
 
         # If the current_version is an LTS release and the version being checked
         # doesn't match, then it must be higher -- and we don't care about it.
-        for pat in entry['lts_release_patterns']:
-            pat = r'^' + pat + '$'
-            if re.match(pat, current_version):
-                if not re.match(pat, version):
-                    return True
+        for lts in entry['lts_releases']:
+            if current_version[:len(lts)] == lts:  # environment is using this LTS release
+                if version[:len(lts)] != lts:  # version considered is not this LTS release
+                    return True  # ignorable, since version not applicable
 
         return False
 

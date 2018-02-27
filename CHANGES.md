@@ -1,5 +1,10 @@
 # Changes and migration requirements
 
+## Version 0.1.35
+
+* Change "LTS" release concept to use partial version strings like "1.11."
+  instead of regular expressions.
+ 
 ## Version 0.1.34
 
 * Add "LTS release" concept.  If the current version of a package matches a
