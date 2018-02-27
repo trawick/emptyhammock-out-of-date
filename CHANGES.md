@@ -4,6 +4,7 @@
 
 * Change "LTS" release concept to use partial version strings like "1.11."
   instead of regular expressions.
+* Updates to the default package db
  
 ## Version 0.1.34
 

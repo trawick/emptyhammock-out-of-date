@@ -327,7 +327,7 @@ uWSGI:
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
-  security_releases: [2.0.16]
+  security_releases: [2.0.16, 2.0.17]
   lts_releases: []
 xlwt:
   changelog_url: ''
