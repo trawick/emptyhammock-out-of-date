@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## Version 0.1.36 (unreleased)
+
+* Fix bug in handling of optional yaml_db parameter to VersionDB().
+
 ## Version 0.1.35
 
 * Change "LTS" release concept to use partial version strings like "1.11."

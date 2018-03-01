@@ -17,14 +17,18 @@ class VersionDB(object):
     ALPHA_BETA_RC = re.compile(r'^[0-9.]+(a|b|rc)\d+$')
 
     def __init__(self, yaml_db=None):
-        if yaml_db is not None and callable(getattr(yaml_db, 'read')):
-            yaml_contents = yaml_db.read()
-        else:
-            if not yaml_db:
-                yaml_db = os.path.join(
+        """
+        :param yaml_db: optional YAML document, specified via a filename or
+           file-like object
+        """
+        if yaml_db is None:
+            yaml_db = os.path.join(
                     os.path.dirname(__file__),
                     'db.yaml'
                 )
+        if callable(getattr(yaml_db, 'read', None)):
+            yaml_contents = yaml_db.read()
+        else:
             with open(yaml_db) as f:
                 yaml_contents = f.read()
 
