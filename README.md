@@ -58,6 +58,13 @@ an expiration date, the spec must be removed once the release is no longer
 supported to avoid suppressing information about relevant newer releases for
 environments still using the out-of-date LTS release.
 
+## Django admin support
+
+The companion package [emptyhammock-out-of-date-django](https://github.com/trawick/emptyhammock-out-of-date-django)
+allows you to maintain the package database for your projects via the Django
+admin, and export that database either from admin or via an HTTP request from
+an authorized client.
+
 ## Dependencies
 
 Python 2.7 and Python 3.x from Ubuntu >= 16.04 are supported.
