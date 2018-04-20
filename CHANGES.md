@@ -3,6 +3,7 @@
 ## Version 0.1.36 (unreleased)
 
 * Fix bug in handling of optional yaml_db parameter to VersionDB().
+* Updates to the default package db
 
 ## Version 0.1.35
 

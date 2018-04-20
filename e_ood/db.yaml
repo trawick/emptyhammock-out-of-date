@@ -1,12 +1,3 @@
----
-____TEMPLATE:
-  changelog_url: ''
-  bug_fix_releases: []
-  compatibility_releases: []
-  feature_releases: []
-  ignored_releases: []
-  security_releases: []
-  lts_releases: []
 beautifulsoup4:
   changelog_url: ''
   bug_fix_releases: []
@@ -25,7 +16,7 @@ bleach:
   lts_releases: []
 certifi:
   changelog_url: ''
-  bug_fix_releases: [2017.11.5, 2018.1.18]
+  bug_fix_releases: [2017.11.5, 2018.1.18, 2018.4.16]
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
@@ -49,28 +40,12 @@ click:
   lts_releases: []
 Django:
   changelog_url: 'https://docs.djangoproject.com/en/2.0/releases/'
-  bug_fix_releases: [1.11.9, 2.0, 2.0.1]
+  bug_fix_releases: [1.11.9, 2.0, 2.0.1, 1.11.12]
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
-  security_releases: [1.11.10, 2.0.2]
+  security_releases: [1.11.10, 2.0.2, 1.11.11]
   lts_releases: [1.11.]
-djangocms-history:
-  changelog_url: 'https://github.com/divio/djangocms-history/commits/master'
-  bug_fix_releases: [0.5.3]
-  compatibility_releases: []
-  feature_releases: []
-  ignored_releases: []
-  security_releases: []
-  lts_releases: []
-djangocms-text-ckeditor:
-  changelog_url: 'https://github.com/divio/djangocms-text-ckeditor/blob/master/CHANGELOG.rst'
-  bug_fix_releases: [3.5.3]
-  compatibility_releases: []
-  feature_releases: []
-  ignored_releases: []
-  security_releases: []
-  lts_releases: []
 django-autocomplete-light:
   changelog_url: 'https://github.com/yourlabs/django-autocomplete-light/blob/master/CHANGELOG'
   bug_fix_releases: [3.3.0]
@@ -81,7 +56,31 @@ django-autocomplete-light:
   lts_releases: []
 django-cms:
   changelog_url: 'https://github.com/divio/django-cms/blob/develop/CHANGELOG.txt'
-  bug_fix_releases: [3.5.0]
+  bug_fix_releases: [3.5.0, 3.5.1, 3.5.2]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+  lts_releases: []
+djangocms-admin-style:
+  changelog_url: 'https://github.com/divio/djangocms-admin-style/blob/master/CHANGELOG.rst'
+  bug_fix_releases: [1.2.8]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+  lts_releases: []
+djangocms-history:
+  changelog_url: 'https://github.com/divio/djangocms-history/commits/master'
+  bug_fix_releases: [0.5.3]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+  lts_releases: []
+djangocms-text-ckeditor:
+  changelog_url: 'https://github.com/divio/djangocms-text-ckeditor/blob/master/CHANGELOG.rst'
+  bug_fix_releases: [3.5.3, 3.6.0]
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
@@ -95,11 +94,19 @@ django-dotenv:
   ignored_releases: []
   security_releases: []
   lts_releases: []
+django-filer:
+  changelog_url: 'https://github.com/divio/django-filer/blob/develop/CHANGELOG.txt'
+  bug_fix_releases: [1.3.1]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+  lts_releases: []
 django-js-asset:
   changelog_url: 'https://github.com/matthiask/django-js-asset/blob/master/CHANGELOG.rst'
   bug_fix_releases: []
   compatibility_releases: []
-  feature_releases: [1.0.0]
+  feature_releases: [1.0.0, 1.1.0]
   ignored_releases: []
   security_releases: []
   lts_releases: []
@@ -113,7 +120,7 @@ django-mptt:
   lts_releases: []
 django-polymorphic:
   changelog_url: 'https://github.com/django-polymorphic/django-polymorphic/blob/master/docs/changelog.rst'
-  bug_fix_releases: [2.0, 2.0.1, 2.0.2]
+  bug_fix_releases: [2.0, 2.0.1, 2.0.2, 1.3.1]
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
@@ -143,10 +150,18 @@ django-taggit:
   ignored_releases: []
   security_releases: []
   lts_releases: []
+django-timezone-field:
+  changelog_url: 'https://github.com/mfogel/django-timezone-field'
+  bug_fix_releases: [2.1]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+  lts_releases: []
 django-treebeard:
   changelog_url: 'https://github.com/django-treebeard/django-treebeard/blob/master/CHANGES'
-  bug_fix_releases: [4.1.2]
-  compatibility_releases: [4.2.0]
+  bug_fix_releases: [4.1.2, 4.2.1]
+  compatibility_releases: [4.2.0, 4.3]
   feature_releases: []
   ignored_releases: []
   security_releases: []
@@ -169,12 +184,10 @@ html5lib:
   lts_releases: []
 huey:
   changelog_url: 'https://github.com/coleifer/huey/blob/master/CHANGELOG.md'
-  bug_fix_releases: [1.5.6]
+  bug_fix_releases: [1.5.6, 1.9.1, 1.6.1, 1.6.0]
   compatibility_releases: []
-# ignored bug fix in 1.6.0: "Fixed bug in serialization of task exceptions."
-# 1.6.1 only fixes a bug in 1.6.0
-  feature_releases: [1.6.0, 1.6.1, 1.7.0]
-  ignored_releases: []
+  feature_releases: [1.7.0]
+  ignored_releases: [1.8.0, 1.9.0]
   security_releases: []
   lts_releases: []
 icalendar:
@@ -182,6 +195,14 @@ icalendar:
   bug_fix_releases: []
   compatibility_releases: []
   feature_releases: [4.0.1]
+  ignored_releases: []
+  security_releases: []
+  lts_releases: []
+jdcal:
+  changelog_url: 'https://github.com/phn/jdcal/blob/master/CHANGELOG.txt'
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: [1.4]
   ignored_releases: []
   security_releases: []
   lts_releases: []
@@ -202,8 +223,8 @@ Markdown:
   security_releases: []
   lts_releases: []
 oauthlib:
-  changelog_url: 'https://github.com/idan/oauthlib/blob/master/CHANGELOG.rst'
-  bug_fix_releases: [2.0.4, 2.0.5, 2.0.6]
+  changelog_url: 'https://github.com/oauthlib/oauthlib/releases'
+  bug_fix_releases: [2.0.4, 2.0.5, 2.0.6, 2.0.7]
   compatibility_releases: []
   feature_releases: []
   ignored_releases: []
@@ -226,8 +247,8 @@ olefile:
   security_releases: []
   lts_releases: []
 openpyxl:
-  changelog_url: 'https://openpyxl.readthedocs.io/en/latest/changes.html'
-  bug_fix_releases: [2.4.10, 2.4.11]
+  changelog_url: 'http://openpyxl.readthedocs.io/en/stable/changes.html'
+  bug_fix_releases: [2.4.10, 2.4.11, 2.5.1, 2.5.2, 2.5.3]
   compatibility_releases: []
   feature_releases: [2.5.0]
   ignored_releases: []
@@ -243,7 +264,7 @@ pexpect:
   lts_releases: []
 Pillow:
   changelog_url: 'https://github.com/python-pillow/Pillow/blob/master/CHANGES.rst'
-  bug_fix_releases: []
+  bug_fix_releases: [5.1.0]
   compatibility_releases: []
   feature_releases: [5.0.0]
   ignored_releases: []
@@ -257,11 +278,27 @@ psycopg2:
   ignored_releases: []
   security_releases: []
   lts_releases: []
-python-dateutil:
-  changelog_url: 'https://github.com/dateutil/dateutil/blob/master/NEWS'
-  bug_fix_releases: [2.6.1]
+PyJWT:
+  changelog_url: 'https://github.com/jpadilla/pyjwt/blob/master/CHANGELOG.md'
+  bug_fix_releases: [1.6.0, 1.6.1]
   compatibility_releases: []
   feature_releases: []
+  ignored_releases: []
+  security_releases: []
+  lts_releases: []
+python-dateutil:
+  changelog_url: 'https://github.com/dateutil/dateutil/blob/master/NEWS'
+  bug_fix_releases: [2.6.1, 2.7.0, 2.7.1, 2.7.2]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: []
+  lts_releases: []
+pytz:
+  changelog_url: 'https://launchpad.net/pytz/+announcements'
+  bug_fix_releases: []
+  compatibility_releases: []
+  feature_releases: [2018.4]
   ignored_releases: []
   security_releases: []
   lts_releases: []
@@ -309,7 +346,7 @@ twilio:
   changelog_url: 'https://github.com/twilio/twilio-python/blob/master/CHANGES.md'
   bug_fix_releases: []
   compatibility_releases: []
-  feature_releases: [6.10.2, 6.10.3, 6.10.4]
+  feature_releases: [6.10.2, 6.10.3, 6.10.4, 6.10.5, 6.11.0, 6.12.0]
   ignored_releases: []
   security_releases: []
   lts_releases: []
