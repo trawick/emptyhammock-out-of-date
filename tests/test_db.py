@@ -98,7 +98,7 @@ class TestDB(unittest.TestCase):
             'non-lts-example', '1.0.0', NON_LTS_EXAMPLE_VERSIONS, types
         )
         self.assertEqual([
-            '1.0.2','1.0.4', '1.0.5', '1.0.7', '1.0.7a1',
+            '1.0.2', '1.0.4', '1.0.5', '1.0.7', '1.0.7a1',
             '1.0.8', '1.0.8rc3'
         ], versions)
 
