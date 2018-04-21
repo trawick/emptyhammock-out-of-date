@@ -1,4 +1,7 @@
 env/
+env-27/
 .idea/
+.tox/
+emptyhammock_out_of_date.egg-info/
 *.pyc
 __pycache__

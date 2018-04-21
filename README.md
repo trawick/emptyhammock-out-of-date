@@ -8,7 +8,6 @@
     on command-line
   * Rename out-of-date.py to use underscores instead of hyphens
   * Improve test coverage
-  * Add `tox` configuration for testing with Python 2.7 and 3.5, and fix any fallout
   * Tag
 
 ## Synopsis
