@@ -4,17 +4,20 @@
 
 ### Breaking changes
 
-* New class ReportedUpdateTypes is used to indicate which types of available
+* New class `ReportedUpdateTypes` is used to indicate which types of available
   releases should be reported.  This affects all clients.
 * `out-of-date.py` syntax changed for invocations with a `pip freeze`
   file.
+* `analyze()` now returns an `AnalyzerReport` object instead of a formatted
+  report.  Use the `render()` object on the report object to get a formatted
+  report, or inspect the report object for custom checks or reporting.
 
 ### Other changes
 
 * `out-of-date.py` now has command-line arguments to configure most aspects
   of operation.
-* Fix bug in handling of string passed to is_security_release().
-* Fix bug in handling of optional yaml_db parameter to VersionDB().
+* Fix bug in handling of string passed to `is_security_release()`.
+* Fix bug in handling of optional `yaml_db` parameter to `VersionDB()`.
 * Updates to the default package db.
 
 ## Version 0.1.35

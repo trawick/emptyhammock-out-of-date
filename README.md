@@ -1,5 +1,16 @@
 # out-of-date checking and reporting for Python packages
 
+## Current state
+
+* `master` has a bunch of untagged changes which amount to a large refactor.
+  Short term plans:
+  * Allow location of cache of PyPI data to be configured programmatically and
+    on command-line
+  * Rename out-of-date.py to use underscores instead of hyphens.
+  * Improve test coverage
+  * `tox` configuration for testing with Python 2.7 and 3.5, and fix any fallout
+  * Tag
+
 ## Synopsis
 
 Assist you with

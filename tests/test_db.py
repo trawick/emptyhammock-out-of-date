@@ -8,23 +8,9 @@ from six import StringIO
 from e_ood.db import ReportedUpdateTypes, VersionDB
 
 
-TEST_DB_CONTENTS = """d:
-  changelog_url: 'https://docs.d.com/CHANGELOG.md'
-  bug_fix_releases: [1.11.9, 2.0, 2.0.1]
-  compatibility_releases: []
-  feature_releases: []
-  ignored_releases: []
-  security_releases: [1.11.10, 2.0.2]
-  lts_releases: [1.11.]
-non-lts-example:
-  changelog_url: 'https://non-lts-example.com/CHANGES.md'
-  bug_fix_releases: [1.0.4, 1.0.7, 1.0.7a1]
-  compatibility_releases: [1.0.3, 1.0.6, 1.0.7b2]
-  feature_releases: [1.0.2]
-  ignored_releases: [1.0.1]
-  security_releases: [1.0.5, 1.0.8, 1.0.8rc3]
-  lts_releases: []
-"""
+TEST_DB_CONTENTS = open(
+    os.path.join(os.path.dirname(__file__), 'test_db.yaml')
+).read()
 NON_LTS_EXAMPLE_VERSIONS = [
     '1.0.1', '1.0.2', '1.0.3', '1.0.4', '1.0.5', '1.0.6', '1.0.7', '1.0.7a1',
     '1.0.7b2', '1.0.8', '1.0.8rc3'

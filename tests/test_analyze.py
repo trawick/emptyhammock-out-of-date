@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from six import StringIO
@@ -7,28 +8,43 @@ from e_ood.db import VersionDB
 from e_ood.virtualenv import EnvPackages
 
 
+TEST_DB_NAME = os.path.join(os.path.dirname(__file__), 'test_db.yaml')
+NON_LTS_EXAMPLE_VERSIONS = [
+    '1.0.1', '1.0.2', '1.0.3', '1.0.4', '1.0.5', '1.0.6', '1.0.7', '1.0.7a1',
+    '1.0.7b2', '1.0.8', '1.0.8rc3'
+]
+
+
 class FakePackageVersionInfo(object):
-    def __init__(self, version_info):
-        self.version_info = version_info
+    """
+    This class mimics the PyPI representation (PackageVersionInfo), in order to
+    * avoid hitting PyPI while running tests
+    * to test with fixed data
+    """
+    def __init__(self, version_info=None):
+        self.version_info = version_info or {}
 
     def get(self, package_name):
-        return self.version_info[package_name]
+        return self.version_info.get(package_name)
+
+    @classmethod
+    def from_list(cls, package_name, versions):
+        data = {
+            package_name: {
+                'releases': {
+                    v: True
+                    for v in versions
+                }
+            }
+        }
+        return cls(data)
 
 
 class TestAnalyze(unittest.TestCase):
 
     def test_lts(self):
-        db_text = """d:
-  changelog_url: 'https://docs.d.com/CHANGELOG.md'
-  bug_fix_releases: [1.11.9, 2.0, 2.0.1]
-  compatibility_releases: []
-  feature_releases: []
-  ignored_releases: []
-  security_releases: [1.11.10, 2.0.2]
-  lts_releases: [1.11.]
-"""
         env = EnvPackages.from_freeze_file(StringIO('d===1.11.5'))
-        version_db = VersionDB(yaml_db=StringIO(db_text))
+        version_db = VersionDB(yaml_db=TEST_DB_NAME)
         available = FakePackageVersionInfo({
             'd': {
                 'releases': {
@@ -41,11 +57,61 @@ class TestAnalyze(unittest.TestCase):
             }
         })
         analyzer = Analyzer(env, available, version_db)
-        actual_report = analyzer.analyze()
+        report = analyzer.analyze()
         expected_report = """d: 1.11.5
 Newer releases:
   1.11.9: Non-security bug fixes
   1.11.10: SECURITY
   Changelog: https://docs.d.com/CHANGELOG.md
 """
-        self.assertEqual(expected_report, actual_report)
+        self.assertEqual(expected_report, report.render())
+
+    def test_report_older(self):
+        env = EnvPackages.from_freeze_file(StringIO('non-lts-example==1.0.7'))
+        version_db = VersionDB(yaml_db=TEST_DB_NAME)
+        available = FakePackageVersionInfo.from_list('non-lts-example', NON_LTS_EXAMPLE_VERSIONS)
+        analyzer = Analyzer(env, available, version_db)
+        report = analyzer.analyze()
+        # non-verbose:
+        expected_report = """non-lts-example: 1.0.7
+Newer releases:
+  1.0.8: SECURITY
+  Changelog: https://non-lts-example.com/CHANGES.md
+"""
+        self.assertEqual(expected_report, report.render())
+        # verbose: (should show older releases)
+        expected_report = """non-lts-example: 1.0.7
+Newer releases:
+  1.0.8: SECURITY
+  Changelog: https://non-lts-example.com/CHANGES.md
+Older: 1.0.1, 1.0.2, 1.0.3, 1.0.4, 1.0.5, 1.0.6, 1.0.7a1, 1.0.7b2
+"""
+        self.assertEqual(expected_report, report.render(verbose=True))
+
+    def test_report_no_newer(self):
+        env = EnvPackages.from_freeze_file(StringIO('non-lts-example==1.0.8'))
+        version_db = VersionDB(yaml_db=TEST_DB_NAME)
+        available = FakePackageVersionInfo.from_list('non-lts-example', NON_LTS_EXAMPLE_VERSIONS)
+        analyzer = Analyzer(env, available, version_db)
+        report = analyzer.analyze()
+        # non-verbose:
+        expected_report = """Up to date: non-lts-example
+"""
+        self.assertEqual(expected_report, report.render())
+        # verbose: (should show older releases)
+        expected_report = """non-lts-example: 1.0.8
+Older: 1.0.1, 1.0.2, 1.0.3, 1.0.4, 1.0.5, 1.0.6, 1.0.7a1, 1.0.7b2, 1.0.7, 1.0.8rc3
+
+Up to date: non-lts-example
+"""
+        self.assertEqual(expected_report, report.render(verbose=True))
+
+    def test_unknown_package(self):
+        env = EnvPackages.from_freeze_file(StringIO('FOO==1.0.8'))
+        version_db = VersionDB(yaml_db=TEST_DB_NAME)
+        available = FakePackageVersionInfo()
+        analyzer = Analyzer(env, available, version_db)
+        report = analyzer.analyze()
+        expected_report = """Packages with PyPI or version problem: FOO
+"""
+        self.assertEqual(expected_report, report.render())

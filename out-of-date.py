@@ -38,22 +38,13 @@ def go():
         sys.exit(1)
 
     analyzer = Analyzer(env_packages, version_info, version_db)
-    output = analyzer.analyze(
+    report = analyzer.analyze(
         ignored_packages=args.ignore.split(', '),
         types=types,
     )
     version_info.save()
 
-    print(output)
-
-    if analyzer.up_to_date:
-        print('Up to date: %s' % ', '.join(analyzer.up_to_date))
-    if env_packages.packages_with_error:
-        print(
-            'Packages with PyPI or version problem: %s' % ', '.join(
-                sorted(env_packages.packages_with_error)
-            )
-        )
+    print(report.render())
 
 
 if __name__ == '__main__':
