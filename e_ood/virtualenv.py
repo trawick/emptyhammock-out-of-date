@@ -18,7 +18,11 @@ class EnvPackages(object):
         self.verbose = verbose
         self.packages = []
         self.packages_with_error = set()
+        self.error_messages = []
         self.last_returned = -1
+
+    def get_errors(self):
+        return '\n'.join(self.error_messages) + ('\n' if self.error_messages else '')
 
     def __iter__(self):
         """
@@ -33,7 +37,7 @@ class EnvPackages(object):
         self.last_returned += 1
         return self.packages[self.last_returned - 1]
 
-    def next(self):
+    def next(self):  # for Python 2
         return self.__next__()
 
     def add(self, package_name, current_version):
@@ -41,6 +45,7 @@ class EnvPackages(object):
 
     def add_error_package(self, package_name, problem):
         self.packages_with_error.add(package_name)
+        self.error_messages.append(problem)
         if self.verbose:
             print(problem)
 
@@ -53,8 +58,9 @@ class EnvPackages(object):
                     break
                 yield line
         else:
-            for line in io.TextIOWrapper(process.stdout, encoding="utf-8"):
-                yield line
+            with io.TextIOWrapper(process.stdout, encoding="utf-8") as f:
+                for line in f:
+                    yield line
 
     @classmethod
     def _parse_package_list(cls, *args, **kwargs):
@@ -74,6 +80,8 @@ class EnvPackages(object):
                 current_version = parse_version(current_version)
                 env_packages.add(package_name, current_version)
             except ValueError:
+                # unreachable, as parse_version() will create a LegacyVersion
+                # with any sort of junk for the string
                 env_packages.add_error_package(
                     package_name,
                     'Bad version "%s" for %s' % (current_version, package_name)
@@ -92,7 +100,6 @@ class EnvPackages(object):
 
     @classmethod
     def from_freeze_file(cls, freeze_file, *args, **kwargs):
-
         readlines = getattr(freeze_file, "readlines", None)
         if not callable(readlines):
             freeze_file = io.open(freeze_file, encoding='utf-8')

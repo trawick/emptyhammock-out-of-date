@@ -36,6 +36,11 @@ def go():
         env_packages = EnvPackages.from_freeze_file(args.frozen, verbose=args.verbose)
     else:
         env_packages = EnvPackages.from_active_env(verbose=args.verbose)
+    if env_packages.packages_with_error:
+        print('Packages in virtualenv with error: %s' % '\n'.join(
+            env_packages.packages_with_error
+        ))
+
     version_db = VersionDB(yaml_db=args.db)
 
     try:
