@@ -2,8 +2,20 @@
 
 ## Version 0.1.36 (unreleased)
 
+### Breaking changes
+
+* New class ReportedUpdateTypes is used to indicate which types of available
+  releases should be reported.  This affects all clients.
+* `out-of-date.py` syntax changed for invocations with a `pip freeze`
+  file.
+
+### Other changes
+
+* `out-of-date.py` now has command-line arguments to configure most aspects
+  of operation.
+* Fix bug in handling of string passed to is_security_release().
 * Fix bug in handling of optional yaml_db parameter to VersionDB().
-* Updates to the default package db
+* Updates to the default package db.
 
 ## Version 0.1.35
 

@@ -4,6 +4,75 @@ import re
 import yaml
 
 
+class ReportedUpdateTypes(object):
+    """
+    Represent which types of updates are of interest to a client.
+    """
+
+    TYPE_TO_FLAGS = {
+        'all': dict(
+            ignore_alpha_beta_rc_releases=False,
+            ignore_feature_releases=False,
+            ignore_compat_releases=False,
+            ignore_bug_fix_releases=False,
+            ignore_security_releases=False,
+        ),
+        'feature': dict(
+            ignore_alpha_beta_rc_releases=True,
+            ignore_feature_releases=False,
+            ignore_compat_releases=False,
+            ignore_bug_fix_releases=False,
+            ignore_security_releases=False,
+        ),
+        'compat': dict(
+            ignore_alpha_beta_rc_releases=True,
+            ignore_feature_releases=True,
+            ignore_compat_releases=False,
+            ignore_bug_fix_releases=False,
+            ignore_security_releases=False,
+        ),
+        'bug': dict(
+            ignore_alpha_beta_rc_releases=True,
+            ignore_feature_releases=True,
+            ignore_compat_releases=True,
+            ignore_bug_fix_releases=False,
+            ignore_security_releases=False,
+        ),
+        'security': dict(
+            ignore_alpha_beta_rc_releases=True,
+            ignore_feature_releases=True,
+            ignore_compat_releases=True,
+            ignore_bug_fix_releases=True,
+            ignore_security_releases=False,
+        ),
+        'none': dict(
+            ignore_alpha_beta_rc_releases=True,
+            ignore_feature_releases=True,
+            ignore_compat_releases=True,
+            ignore_bug_fix_releases=True,
+            ignore_security_releases=True,
+        ),
+    }
+
+    def __init__(self, types=None):
+        types = types or 'bug'
+        try:
+            ignore_args = self.TYPE_TO_FLAGS[types]
+        except KeyError:
+            raise ValueError('Invalid types "%s"' % types)
+        for k, v in ignore_args.items():
+            setattr(self, k, v)
+
+    def update(self, **kwargs):
+        valid_flags = self.TYPE_TO_FLAGS['none'].keys()
+        for k, v in kwargs.items():
+            if k not in valid_flags:
+                raise ValueError('Invalid flag "%s" passed to update()' % k)
+            if type(v) != bool:
+                raise ValueError('Invalid value "%s" for flag "%s" passed to update()' % (v, k))
+            setattr(self, k, v)
+
+
 class VersionDB(object):
 
     MAPPINGS = (
@@ -64,39 +133,39 @@ class VersionDB(object):
 
     def is_security_release(self, package_name, versions):
         if isinstance(versions, str):
-            versions = [str]
+            versions = [versions]
         entry = self._get_entry(package_name)
         for version in versions:
             if version in entry['security_releases']:
                 return True
         return False
 
-    def _ignorable(self, entry, current_version, version, ignore_feature_releases,
-                   ignore_compat_releases, ignore_alpha_beta_rc_releases):
-        if version in entry['ignored_releases']:
-            return True
-        if ignore_feature_releases and version in entry['feature_releases']:
-            return True
-        if ignore_compat_releases and version in entry['compatibility_releases']:
-            return True
-        if ignore_alpha_beta_rc_releases and self.ALPHA_BETA_RC.match(version):
-            return True
-
-        # If the current_version is an LTS release and the version being checked
-        # doesn't match, then it must be higher -- and we don't care about it.
-        for lts in entry['lts_releases']:
-            if current_version[:len(lts)] == lts:  # environment is using this LTS release
-                if version[:len(lts)] != lts:  # version considered is not this LTS release
-                    return True  # ignorable, since version not applicable
-
-        return False
-
-    def ignore_releases(self, package_name, current_version, versions,
-                        ignore_feature_releases=False,
-                        ignore_compat_releases=False, ignore_alpha_beta_rc_releases=True):
+    def filter_available_releases(self, package_name, current_version, versions, types):
         entry = self._get_entry(package_name)
+
+        def _ignorable(version):
+            if version in entry['ignored_releases']:
+                return True
+            if types.ignore_feature_releases and version in entry['feature_releases']:
+                return True
+            if types.ignore_bug_fix_releases and version in entry['bug_fix_releases']:
+                return True
+            if types.ignore_security_releases and version in entry['security_releases']:
+                return True
+            if types.ignore_compat_releases and version in entry['compatibility_releases']:
+                return True
+            if types.ignore_alpha_beta_rc_releases and self.ALPHA_BETA_RC.match(version):
+                return True
+
+            # If the current_version is an LTS release and the version being checked
+            # doesn't match, then it must be higher -- and we don't care about it.
+            for lts in entry['lts_releases']:
+                if current_version[:len(lts)] == lts:  # environment is using this LTS release
+                    if version[:len(lts)] != lts:  # version considered is not this LTS release
+                        return True  # ignorable, since version not applicable
+
+            return False
+
         return [
-            v for v in versions
-            if not self._ignorable(entry, current_version, str(v), ignore_feature_releases,
-                                   ignore_compat_releases, ignore_alpha_beta_rc_releases)
+            v for v in versions if not _ignorable(str(v))
         ]

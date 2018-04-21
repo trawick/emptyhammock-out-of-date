@@ -1,22 +1,21 @@
 from pkg_resources import parse_version
 
+from .db import ReportedUpdateTypes
+
 
 class Analyzer(object):
 
-    def __init__(self, env, version_info, version_db, ignore_feature_releases=True,
-                 ignore_compat_releases=True, ignore_alpha_beta_rc_releases=True):
+    def __init__(self, env, version_info, version_db):
         self.verbose = False
         self.env = env
         self.version_info = version_info
         self.version_db = version_db
-        self.ignore_feature_releases = ignore_feature_releases
-        self.ignore_compat_releases = ignore_compat_releases
-        self.ignore_alpha_beta_rc_releases = ignore_alpha_beta_rc_releases
         self.up_to_date = []
         self.messages = []
 
-    def analyze(self, ignored_packages=None):
+    def analyze(self, ignored_packages=None, types=None):
         ignored_packages = ignored_packages or []
+        types = types or ReportedUpdateTypes()
         self.up_to_date = []
         for package_name, current_version in self.env:
             if package_name in ignored_packages:
@@ -41,11 +40,8 @@ class Analyzer(object):
                     )
             current_version = str(current_version).lstrip('=')
             try:
-                newer = self.version_db.ignore_releases(
-                    package_name, current_version, newer,
-                    ignore_feature_releases=self.ignore_feature_releases,
-                    ignore_compat_releases=self.ignore_compat_releases,
-                    ignore_alpha_beta_rc_releases=self.ignore_alpha_beta_rc_releases,
+                newer = self.version_db.filter_available_releases(
+                    package_name, current_version, newer, types,
                 )
             except ValueError:
                 # The lack of an entry for the package will show up later, if there
