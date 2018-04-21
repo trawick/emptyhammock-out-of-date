@@ -77,10 +77,10 @@ environments still using the out-of-date LTS release.
 
 ### Default database
 
-This package ships with a default database, which is most useful as an example.
+This package ships with a default database which is useful as an example.
 The database contains only packages used by Emptyhammock projects, and only for
-versions of those packages current since the project was first set up.
-Furthermore, the version of the database in this package is almost always out
+versions of those packages released since this project was put to use.
+Additionally, the version of the database in this package is almost always out
 of date with the one used for the analysis of Emptyhammock virtualenvs.
 
 ## Django admin support
