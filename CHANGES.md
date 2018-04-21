@@ -4,6 +4,7 @@
 
 ### Breaking changes
 
+* Script renamed to `out_of_date.py`.
 * New class `ReportedUpdateTypes` is used to indicate which types of available
   releases should be reported.  This affects all clients.
 * `out-of-date.py` syntax changed for invocations with a `pip freeze`

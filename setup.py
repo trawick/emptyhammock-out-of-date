@@ -31,5 +31,5 @@ setup(
     install_requires=[
         'requests', 'PyYAML',
     ],
-    scripts=('out-of-date.py',),
+    scripts=('out_of_date.py',),
 )

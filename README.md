@@ -4,7 +4,6 @@
 
 * `master` has a bunch of untagged changes which amount to a large refactor.
   Short term plans:
-  * Rename out-of-date.py to use underscores instead of hyphens
   * Improve test coverage
   * Tag
 
