@@ -5,10 +5,7 @@ from __future__ import print_function
 import argparse
 import sys
 
-from e_ood.analyze import Analyzer
-from e_ood.db import VersionDB, ReportedUpdateTypes
-from e_ood.pypi import PackageVersionInfo
-from e_ood.virtualenv import EnvPackages
+from e_ood import Analyzer, EnvPackages, PackageVersionInfo, ReportedUpdateTypes, VersionDB
 
 
 def go():

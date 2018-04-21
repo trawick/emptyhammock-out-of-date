@@ -5,7 +5,7 @@ import unittest
 
 from six import StringIO
 
-from e_ood.virtualenv import EnvPackages
+from e_ood import EnvPackages
 
 
 class TestReadMechanisms(unittest.TestCase):

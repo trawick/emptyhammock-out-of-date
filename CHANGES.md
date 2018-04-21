@@ -14,6 +14,8 @@
 
 ### Other changes
 
+* All imports can (and should) be imported from the package ()`e_ood`) instead
+  of individual modules within the package.
 * `out-of-date.py` now has command-line arguments to configure most aspects
   of operation.
 * Fix bug in handling of string passed to `is_security_release()`.

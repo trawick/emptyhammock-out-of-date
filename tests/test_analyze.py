@@ -3,9 +3,7 @@ import unittest
 
 from six import StringIO
 
-from e_ood.analyze import Analyzer
-from e_ood.db import VersionDB
-from e_ood.virtualenv import EnvPackages
+from e_ood import Analyzer, EnvPackages, VersionDB
 
 
 TEST_DB_NAME = os.path.join(os.path.dirname(__file__), 'test_db.yaml')
