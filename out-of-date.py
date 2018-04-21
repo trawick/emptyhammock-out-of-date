@@ -13,18 +13,25 @@ from e_ood.virtualenv import EnvPackages
 
 def go():
     parser = argparse.ArgumentParser()
-    parser.parse_args()
+    parser.add_argument(
+        '--cache-file',
+        help='name of JSON document where data from PyPI is cached'
+    )
     parser.add_argument('--cache-time', help='seconds that data from PyPI is cached',
                         type=int)
     parser.add_argument('--db', help='path to package release database')
     parser.add_argument('--frozen', help='path to "pip freeze" output')
     parser.add_argument('--ignore', help='comma-delimited list of packages to ignore', default='')
-    parser.add_argument('--types', help='feature|compat|bug|security')
+    parser.add_argument('--types', help='all|feature|compat|bug|security')
     parser.add_argument('--verbose', help='show more details',
                         action='store_true')
     args = parser.parse_args()
 
-    version_info = PackageVersionInfo(max_pypi_age_seconds=args.cache_time)
+    version_info = PackageVersionInfo(
+        max_pypi_age_seconds=args.cache_time,
+        pypi_cache_file=args.cache_file
+    )
+
     if args.frozen:
         env_packages = EnvPackages.from_freeze_file(args.frozen, verbose=args.verbose)
     else:

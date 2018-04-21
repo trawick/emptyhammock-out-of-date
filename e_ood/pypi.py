@@ -16,16 +16,22 @@ class PackageVersionInfo(object):
     Provide information about versions available on PyPI
     """
 
-    def __init__(self, max_pypi_age_seconds=None):
+    def __init__(self, max_pypi_age_seconds=None, pypi_cache_file=None):
         if max_pypi_age_seconds is None:
             max_pypi_age_seconds = 60 * 60 * 24
-        user_path = os.path.expanduser('~')
-        self.pyold_cache_file = os.path.join(user_path, '.pyold.json')
+
+        if pypi_cache_file is None:
+            user_path = os.path.expanduser('~')
+            self.pypi_cache_file = os.path.join(user_path, '.eood.json')
+        else:
+            self.pypi_cache_file = pypi_cache_file
+
         try:
-            self.pyold_cache = json.load(open(self.pyold_cache_file, 'r'))
+            self.pypi_cache = json.load(open(self.pypi_cache_file, 'r'))
         except:  # noqa
-            self.pyold_cache = {}
-        self.pyold_cache_changed = False
+            self.pypi_cache = {}
+
+        self.pypi_cache_changed = False
         request_headers = {
             'User-Agent': 'emptyhammock-ood %s' % e_ood.__version__,
         }
@@ -35,20 +41,20 @@ class PackageVersionInfo(object):
         self.pypi_session.headers.update(request_headers)
 
     def save(self):
-        if self.pyold_cache_changed:
-            json.dump(self.pyold_cache, open(self.pyold_cache_file, 'w'))
+        if self.pypi_cache_changed:
+            json.dump(self.pypi_cache, open(self.pypi_cache_file, 'w'))
 
     def get(self, package_name):
-        if package_name in self.pyold_cache:
-            retrieved = self.pyold_cache[package_name].get('retrieved')
+        if package_name in self.pypi_cache:
+            retrieved = self.pypi_cache[package_name].get('retrieved')
             out_of_date = \
                 (not retrieved) or \
                 (retrieved < self.current_time_seconds - self.max_pypi_age_seconds)
             if out_of_date:
-                del self.pyold_cache[package_name]
-                self.pyold_cache_changed = True
+                del self.pypi_cache[package_name]
+                self.pypi_cache_changed = True
 
-        if package_name not in self.pyold_cache:
+        if package_name not in self.pypi_cache:
             url = 'https://pypi.python.org/pypi/%s/json' % package_name
             result = self.pypi_session.get(url)
             if result.status_code not in (200, 404):
@@ -57,12 +63,12 @@ class PackageVersionInfo(object):
                     result.status_code, package_name
                 )
                 return None
-            self.pyold_cache[package_name] = {
+            self.pypi_cache[package_name] = {
                 'from_pypi':
                     json.loads(result.content.decode('utf-8'))
                     if result.status_code == 200 else None,
                 'retrieved': self.current_time_seconds,
             }
-            self.pyold_cache_changed = True
+            self.pypi_cache_changed = True
 
-        return self.pyold_cache[package_name]['from_pypi']
+        return self.pypi_cache[package_name]['from_pypi']
