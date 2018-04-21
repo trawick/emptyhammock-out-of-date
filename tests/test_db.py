@@ -1,5 +1,6 @@
 import os
 import re
+import shutil
 import tempfile
 import unittest
 
@@ -24,6 +25,12 @@ class TestHandlingOfDB(unittest.TestCase):
     * override db specified via file handle
     * override db specified via file name
     """
+    def setUp(self):
+        self.temp_dir = tempfile.mkdtemp()
+
+    def tearDown(self):
+        shutil.rmtree(self.temp_dir)
+
     def test_yaml_db_default(self):
         version_db = VersionDB()
         self.assertEqual(
@@ -39,15 +46,14 @@ class TestHandlingOfDB(unittest.TestCase):
         )
 
     def test_yaml_db_filename(self):
-        with tempfile.TemporaryDirectory() as tmpdirname:
-            db_path = os.path.join(tmpdirname, 'test.yaml')
-            with open(db_path, 'w') as f:
-                f.write(TEST_DB_CONTENTS)
-            version_db = VersionDB(yaml_db=db_path)
-            self.assertEqual(
-                'https://docs.d.com/CHANGELOG.md',
-                version_db.get_changelog('d')
-            )
+        db_path = os.path.join(self.temp_dir, 'test.yaml')
+        with open(db_path, 'w') as f:
+            f.write(TEST_DB_CONTENTS)
+        version_db = VersionDB(yaml_db=db_path)
+        self.assertEqual(
+            'https://docs.d.com/CHANGELOG.md',
+            version_db.get_changelog('d')
+        )
 
 
 class TestDB(unittest.TestCase):

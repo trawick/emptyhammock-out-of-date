@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if ! python -m unittest; then
+if ! python -m unittest discover; then
     exit 1
 fi
 
