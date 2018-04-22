@@ -1,5 +1,7 @@
 # out-of-date checking and reporting for Python packages
 
+[![Build Status](https://travis-ci.org/trawick/emptyhammock-out-of-date.svg?branch=master)](https://travis-ci.org/trawick/emptyhammock-out-of-date)
+
 ## Current state
 
 * `master` has a bunch of untagged changes which amount to a large refactor.
