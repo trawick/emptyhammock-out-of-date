@@ -2,34 +2,27 @@
 
 [![Build Status](https://travis-ci.org/trawick/emptyhammock-out-of-date.svg?branch=master)](https://travis-ci.org/trawick/emptyhammock-out-of-date)
 
-## Current state
-
-* `master` has a bunch of untagged changes which amount to a large refactor.
-  Short term plans:
-  * Improve test coverage
-  * Tag
-
 ## Synopsis
 
-Assist you with
+This package assists you with
 
-* finding out when a newer version of a package in your virtualenv is available
-  from PyPI
-* storing your determination of the criticality of the upgrade to that package
-* reporting the packages in your virtualenv that need to be updated, and why
+* Finding out when a newer version of a package in your virtualenv is available
+  from PyPI.
+* Recording your determination of the criticality of the upgrade to that package.
+* Reporting the packages in your virtualenv that need to be updated, and why.
 
 ## Target audience
 
 You carefully track the versions of packages in your virtualenv and assess new
-releases to determine if you should upgrade, and how quickly.
+releases to determine if, and how quickly, you should upgrade.
 
-## Components
+## Information used to analyze your virtualenv
 
-* your virtualenv's contents, either in the form of the output of `pip freeze`
+* Your virtualenv's contents, either in the form of the output of `pip freeze`
   or examination of the virtualenv when this library is used
-* access to PyPI, to find out when new package versions are available
+* PyPI, to find out when new package versions are available
   * cached for a configurable length of time
-* a package release database, in the form of a YAML file, that categorizes the
+* Your package release database, in the form of a YAML file, that categorizes the
   releases of PyPI packages of interest by criticality
   * e.g., covering the *N* packages used by your *M* projects
 
@@ -37,10 +30,10 @@ releases to determine if you should upgrade, and how quickly.
 
 ### Format
 
-The database is a YAML dictionary, with these attributes for each included
-package:
+The database is a YAML dictionary that you maintain, with these attributes for
+each included package:
 
-```
+```yaml
 my-package-name:
   bug_fix_releases: []
   compatibility_releases: []
@@ -50,7 +43,20 @@ my-package-name:
   lts_releases: []
 ```
 
-Any release of the package with a security fix will be listed **only** in
+An actual example:
+
+```yaml
+Django:
+  changelog_url: 'https://docs.djangoproject.com/en/2.0/releases/'
+  bug_fix_releases: [1.11.9, 2.0, 2.0.1, 1.11.12]
+  compatibility_releases: []
+  feature_releases: []
+  ignored_releases: []
+  security_releases: [1.11.10, 2.0.2, 1.11.11]
+  lts_releases: [1.11.]
+```
+
+A release of a package with a security fix will be listed **only** in
 `security_releases`, any other releases with some other type of bug fix
 will be listed only in `bug_fix_releases`, any other releases with changes to
 accommodate new Python, Django, or other critical dependencies will be
@@ -60,7 +66,7 @@ this a report of the most critical version issues can be created.
 
 #### LTS releases and bug fixes for later non-LTS releases
 
-Django is the obvious example for this.  At the time of this writing, 1.11 is
+The Django example above illustrates this concept.  At the time of this writing, 1.11 is
 the current LTS release and 2.0 is a non-LTS feature release.  New versions in
 either the 1.11 or 2.0 series are included in `bug_fix_releases` or
 `security_releases` as appropriate, and 1.11 is declared to be an LTS release.
@@ -68,17 +74,20 @@ Thus, if an environment is using 1.11.x (i.e., using the LTS release), then
 only newer bug or security fix releases in the 1.11 series will be considered
 critical.
 
-Using Django 1.11 as an example again, the LTS release is specified as `1.11.`,
+For the Django LTS release 1.11, the LTS release is specified as `1.11.`,
 which will match `1.11.anything`.  As an LTS release specification doesn't have
-an expiration date, the spec must be removed once the release is no longer
-supported to avoid suppressing information about relevant newer releases for
-environments still using the out-of-date LTS release.
+an expiration date, the spec must be removed from the database once the release
+is no longer supported.  Otherwise, information about relevant newer releases for
+environments still using the out-of-date LTS release would be suppressed.
 
 ### Default database
 
-This package ships with a default database which is useful as an example.
-The database contains only packages used by Emptyhammock projects, and only for
-versions of those packages released since this project was put to use.
+This package ships with a default database which serves as an example.  It will
+be used unless your database is specified with the command-line tool or using
+the API.
+
+The default database contains only packages used by Emptyhammock projects, and
+only for packages with new releases since this project was put to use.
 Additionally, the version of the database in this package is almost always out
 of date with the one used for the analysis of Emptyhammock virtualenvs.
 
