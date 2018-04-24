@@ -22,6 +22,7 @@
 * Fix bug in handling of string passed to `is_security_release()`.
 * Fix bug in handling of optional `yaml_db` parameter to `VersionDB()`.
 * Updates to the default package db.
+* PyPI cache file isn't left opened.
 
 ## Version 0.1.35
 
