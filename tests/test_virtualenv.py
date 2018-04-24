@@ -56,3 +56,30 @@ class TestVirtualenv(unittest.TestCase):
         self.assertEqual('Could not parse package/version "xxx"\n', env.get_errors())
         packages = [p for p, _ in env]
         self.assertEqual(['a'], packages)
+
+
+class TestIterator(unittest.TestCase):
+
+    def setUp(self):
+        self.env = EnvPackages.from_freeze_file(
+            StringIO('a==1.0.0\nb==2.0.0\nc==3.0.0\n')
+        )
+
+    def test_one_iterator(self):
+        i1 = iter(self.env)
+        self.assertEqual('a', next(i1)[0])
+        self.assertEqual('b', next(i1)[0])
+        self.assertEqual('c', next(i1)[0])
+        with self.assertRaises(StopIteration):
+            next(i1)
+
+    def test_two_iterators(self):
+        i1 = iter(self.env)
+        i2 = iter(self.env)
+        self.assertEqual(next(i1), next(i2))
+        self.assertEqual(next(i1), next(i2))
+        self.assertEqual(next(i1), next(i2))
+        with self.assertRaises(StopIteration):
+            next(i1)
+        with self.assertRaises(StopIteration):
+            next(i2)

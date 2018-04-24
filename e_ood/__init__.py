@@ -1,4 +1,4 @@
-__version__ = '0.1.37'
+__version__ = '0.1.38a'
 # !__version__ must be set on the first line, for setup.py!
 
 from .analyze import Analyzer  # noqa

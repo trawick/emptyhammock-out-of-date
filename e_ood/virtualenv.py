@@ -19,26 +19,12 @@ class EnvPackages(object):
         self.packages = []
         self.packages_with_error = set()
         self.error_messages = []
-        self.last_returned = -1
 
     def get_errors(self):
         return '\n'.join(self.error_messages) + ('\n' if self.error_messages else '')
 
     def __iter__(self):
-        """
-        Does not support multiple simultaneous iterators!
-        """
-        self.last_returned = 0
-        return self
-
-    def __next__(self):
-        if self.last_returned >= len(self.packages):
-            raise StopIteration
-        self.last_returned += 1
-        return self.packages[self.last_returned - 1]
-
-    def next(self):  # for Python 2
-        return self.__next__()
+        return EnvPackagesIterator(self.packages)
 
     def add(self, package_name, current_version):
         self.packages.append((package_name, current_version))
@@ -112,3 +98,24 @@ class EnvPackages(object):
             return cls._parse_package_list(*args, lister=lister, **kwargs)
         finally:
             freeze_file.close()
+
+
+class EnvPackagesIterator(object):
+
+    def __init__(self, packages):
+        self.packages = packages
+        self.index = 0
+
+    def __next__(self):
+        try:
+            package = self.packages[self.index]
+        except IndexError:
+            raise StopIteration
+        self.index += 1
+        return package
+
+    def next(self):  # for Python 2
+        return self.__next__()
+
+    def __iter__(self):
+        return self

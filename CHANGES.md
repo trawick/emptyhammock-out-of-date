@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## Version 0.1.38 (unreleased)
+
+* `EnvPackages` supports multiple concurrent iterators.
+
 ## Version 0.1.37
 
 * Fix packaging issue encountered when installing into virtualenvs
