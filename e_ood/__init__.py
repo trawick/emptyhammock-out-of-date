@@ -1,4 +1,4 @@
-__version__ = '0.1.36a1'
+__version__ = '0.1.36'
 
 from .analyze import Analyzer  # noqa
 from .db import ReportedUpdateTypes, VersionDB  # noqa
