@@ -5,9 +5,11 @@ import sys
 
 from setuptools import setup
 
-import e_ood
-
-VERSION = e_ood.__version__
+# Importing the package to get the version fails if our
+# own requirements aren't available.
+with open('e_ood/__init__.py') as f:
+    line_1 = f.readline()
+    _, _, VERSION = line_1.split(' ')
 
 if sys.argv[-1] == 'tag':
     os.system("git tag -a %s -m 'version %s'" % (VERSION, VERSION))

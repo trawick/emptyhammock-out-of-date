@@ -1,5 +1,10 @@
 # Changes and migration requirements
 
+## Version 0.1.37
+
+* Fix packaging issue encountered when installing into virtualenvs
+  without `yaml` and `requests`.
+
 ## Version 0.1.36
 
 ### Breaking changes
