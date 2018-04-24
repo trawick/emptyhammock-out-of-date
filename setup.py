@@ -9,7 +9,7 @@ from setuptools import setup
 # own requirements aren't available.
 with open('e_ood/__init__.py') as f:
     line_1 = f.readline()
-    _, _, VERSION = line_1.split(' ')
+    _, _, VERSION = line_1.replace("'", "").strip().split(' ')
 
 if sys.argv[-1] == 'tag':
     os.system("git tag -a %s -m 'version %s'" % (VERSION, VERSION))
