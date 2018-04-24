@@ -13,3 +13,4 @@ tox==3.0.0
   pluggy==0.6.0
   py==1.5.3
   virtualenv==15.2.0
+requests-mock==1.4.0
