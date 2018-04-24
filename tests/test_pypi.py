@@ -33,8 +33,6 @@ class Test(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test_lookup(self, m):
-        if os.path.exists(self.cache_file):
-            os.remove(self.cache_file)
         self.setup_response(m, self.test_package, ['1.0.1', '1.0.2', '1.0.3'])
         pvi = PackageVersionInfo(
             pypi_cache_file=self.cache_file
