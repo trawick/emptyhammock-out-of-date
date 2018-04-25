@@ -9,6 +9,8 @@
 
 ### Other changes
 
+* `PackageVersionInfo` supports a context manager, to avoid having to call
+  `save()` after looking up version information.
 * `EnvPackages` supports multiple concurrent iterators.
 
 ## Version 0.1.37

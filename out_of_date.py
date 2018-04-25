@@ -24,11 +24,6 @@ def go():
     parser.add_argument('freeze_output', nargs='?')
     args = parser.parse_args()
 
-    version_info = PackageVersionInfo(
-        max_pypi_age_seconds=args.cache_time,
-        pypi_cache_file=args.cache_file
-    )
-
     if args.freeze_output:
         env_packages = EnvPackages.from_freeze_file(args.freeze_output, verbose=args.verbose)
     else:
@@ -46,12 +41,15 @@ def go():
         print('Bad value for --types', file=sys.stderr)
         sys.exit(1)
 
-    analyzer = Analyzer(env_packages, version_info, version_db)
-    report = analyzer.analyze(
-        ignored_packages=args.ignore.split(', '),
-        types=types,
-    )
-    version_info.save()
+    with PackageVersionInfo(
+        max_pypi_age_seconds=args.cache_time,
+        pypi_cache_file=args.cache_file
+    ) as version_info:
+        analyzer = Analyzer(env_packages, version_info, version_db)
+        report = analyzer.analyze(
+            ignored_packages=args.ignore.split(', '),
+            types=types,
+        )
 
     print(report.render())
 

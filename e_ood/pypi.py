@@ -41,6 +41,13 @@ class PackageVersionInfo(object):
         self.pypi_session = requests.Session()
         self.pypi_session.headers.update(request_headers)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is None:
+            self.save()
+
     def save(self):
         if self.pypi_cache_changed:
             with open(self.pypi_cache_file, 'w') as f:
