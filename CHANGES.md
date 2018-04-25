@@ -2,6 +2,13 @@
 
 ## Version 0.1.38 (unreleased)
 
+### Breaking changes
+
+* Optional freeze output is passed to `out_of_date.py` as a normal argument,
+  instead of using `--frozen` option.
+
+### Other changes
+
 * `EnvPackages` supports multiple concurrent iterators.
 
 ## Version 0.1.37

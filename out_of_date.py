@@ -17,11 +17,11 @@ def go():
     parser.add_argument('--cache-time', help='seconds that data from PyPI is cached',
                         type=int)
     parser.add_argument('--db', help='path to package release database')
-    parser.add_argument('--frozen', help='path to "pip freeze" output')
     parser.add_argument('--ignore', help='comma-delimited list of packages to ignore', default='')
     parser.add_argument('--types', help='all|feature|compat|bug|security')
     parser.add_argument('--verbose', help='show more details',
                         action='store_true')
+    parser.add_argument('freeze_output', nargs='?')
     args = parser.parse_args()
 
     version_info = PackageVersionInfo(
@@ -29,8 +29,8 @@ def go():
         pypi_cache_file=args.cache_file
     )
 
-    if args.frozen:
-        env_packages = EnvPackages.from_freeze_file(args.frozen, verbose=args.verbose)
+    if args.freeze_output:
+        env_packages = EnvPackages.from_freeze_file(args.freeze_output, verbose=args.verbose)
     else:
         env_packages = EnvPackages.from_active_env(verbose=args.verbose)
     if env_packages.packages_with_error:
