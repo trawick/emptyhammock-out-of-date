@@ -1,6 +1,6 @@
 # Changes and migration requirements
 
-## Version 0.1.38 (unreleased)
+## Version 0.1.38
 
 ### Breaking changes
 
