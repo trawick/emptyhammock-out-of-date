@@ -13,18 +13,17 @@ This package assists you with
 
 ## Target audience
 
-You carefully track the versions of packages in your virtualenv and assess new
-releases to determine if, and how quickly, you should upgrade.
+You carefully track the versions of packages in your production virtualenvs and assess new
+releases of those packages to determine if, and how quickly, you should upgrade.
 
 ## Information used to analyze your virtualenv
 
 * Your virtualenv's contents, either in the form of the output of `pip freeze`
-  or examination of the virtualenv when this library is used
+  or examination of the active virtualenv
 * PyPI, to find out when new package versions are available
   * cached for a configurable length of time
 * Your package release database, in the form of a YAML file, that categorizes the
   releases of PyPI packages of interest by criticality
-  * e.g., covering the *N* packages used by your *M* projects
 
 ## Package release database
 
@@ -56,13 +55,12 @@ Django:
   lts_releases: [1.11.]
 ```
 
-A release of a package with a security fix will be listed **only** in
+A release of a package with a security fix should be listed **only** in
 `security_releases`, any other releases with some other type of bug fix
-will be listed only in `bug_fix_releases`, any other releases with changes to
-accommodate new Python, Django, or other critical dependencies will be
+should be listed only in `bug_fix_releases`, any other releases with changes to
+accommodate new Python, Django, or other critical dependencies should be
 listed only in `compatibility_releases`, etc.  `lts_releases` lists releases
-of a package for which fixes for all critical problems are available.  From
-this a report of the most critical version issues can be created.
+of a package for which fixes for all critical problems are available.
 
 #### LTS releases and bug fixes for later non-LTS releases
 
@@ -80,18 +78,18 @@ an expiration date, the spec must be removed from the database once the release
 is no longer supported.  Otherwise, information about relevant newer releases for
 environments still using the out-of-date LTS release would be suppressed.
 
-### Default database
+### Default package release database
 
 This package ships with a default database which serves as an example.  It will
-be used unless your database is specified with the command-line tool or using
-the API.
+be used unless your database is specified, either with the API or with the
+command-line tool.
 
 The default database contains only packages used by Emptyhammock projects, and
 only for packages with new releases since this project was put to use.
 Additionally, the version of the database in this package is almost always out
 of date with the one used for the analysis of Emptyhammock virtualenvs.
 
-## Django admin support
+## Django admin support for package release database
 
 The companion package [emptyhammock-out-of-date-django](https://github.com/trawick/emptyhammock-out-of-date-django)
 allows you to maintain the package database for your projects via the Django
@@ -102,3 +100,51 @@ an authorized client.
 
 * Python: 2.7.recent, 3.5, 3.6, and 3.7 are supported.
 * `Requests` and `PyYAML`
+
+## Installation
+
+`emptyhammock-out-of-date` is not currently on PyPI, so it is installed from
+GitHub as follows:
+
+```
+(virtualenv) $ pip install git+git://github.com/trawick/emptyhammock-out-of-date.git@0.1.99
+```
+
+Replace `0.1.99` with the latest release, visible on the
+[release page](https://github.com/trawick/emptyhammock-out-of-date/releases).
+
+## Running from the command-line
+
+```
+(virtualenv) $ out_of_date.py
+certifi: 2018.1.18
+Newer releases:
+  2018.4.16: Non-security bug fixes
+
+pycodestyle: 2.3.1
+Newer releases:
+  2.4.0: No information about package
+
+Up to date: chardet, coverage, flake8, idna, mccabe, pluggy, py, pyflakes, PyYAML, requests, requests-mock, six, tox, urllib3, virtualenv
+```
+
+*In this example, `pycodestyle` is not defined in the package release
+database.*
+
+## Using the API
+
+```python
+from e_ood import Analyzer, EnvPackages, PackageVersionInfo, VersionDB
+
+env_packages = EnvPackages.from_freeze_file('production-freeze.txt')
+yaml_db = '/path/to/your/db.yaml'
+version_db = VersionDB(yaml_db=yaml_db)
+with PackageVersionInfo() as version_info:
+    analyzer = Analyzer(env_packages, version_info, version_db)
+    result = analyzer.analyze()
+output = result.render()
+if output:
+    print('Out of date packages for foo.com:')
+    print()
+    print(output)
+```
