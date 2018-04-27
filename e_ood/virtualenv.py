@@ -1,4 +1,5 @@
 import io
+import re
 from subprocess import Popen, PIPE
 import sys
 
@@ -53,7 +54,6 @@ class EnvPackages(object):
         lister = kwargs.pop('lister')
         env_packages = EnvPackages(*args, **kwargs)
         for line in lister():
-            line = line.strip()
             try:
                 package_name, current_version = line.split('==')
             except ValueError:
@@ -80,7 +80,7 @@ class EnvPackages(object):
 
         def lister():
             for line in cls.get_process_output(process):
-                yield line
+                yield line.strip()
 
         return cls._parse_package_list(*args, lister=lister, **kwargs)
 
@@ -92,6 +92,9 @@ class EnvPackages(object):
 
         def lister():
             for line in freeze_file.readlines():
+                line = line.strip()
+                if re.search(r'^(#|$)', line):
+                    continue
                 yield line
 
         try:

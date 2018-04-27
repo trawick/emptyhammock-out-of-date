@@ -9,6 +9,7 @@
 
 ### Other changes
 
+* Ignore blank lines and "#" comments in freeze files.
 * `PackageVersionInfo` supports a context manager, to avoid having to call
   `save()` after looking up version information.
 * `EnvPackages` supports multiple concurrent iterators.

@@ -57,6 +57,18 @@ class TestVirtualenv(unittest.TestCase):
         packages = [p for p, _ in env]
         self.assertEqual(['a'], packages)
 
+    def test_ignore_some_lines(self):
+        env = EnvPackages.from_freeze_file(
+            StringIO('\n\n# foo bar \na===1.0.0\n# foo bar\n   #\n  \nxxx')
+        )
+        self.assertEqual(
+            {'xxx'},
+            env.packages_with_error
+        )
+        self.assertEqual('Could not parse package/version "xxx"\n', env.get_errors())
+        packages = [p for p, _ in env]
+        self.assertEqual(['a'], packages)
+
 
 class TestIterator(unittest.TestCase):
 
