@@ -93,8 +93,7 @@ Older: 1.0.1, 1.0.2, 1.0.3, 1.0.4, 1.0.5, 1.0.6, 1.0.7a1, 1.0.7b2
         analyzer = Analyzer(env, available, version_db)
         report = analyzer.analyze()
         # non-verbose:
-        expected_report = """Up to date: non-lts-example
-"""
+        expected_report = ''
         self.assertEqual(expected_report, report.render())
         # verbose: (should show older releases)
         expected_report = """non-lts-example: 1.0.8

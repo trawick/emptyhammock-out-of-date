@@ -9,12 +9,14 @@ class AnalyzerPackageReport(object):
         self.version_db = version_db
         self.name = package_name
         self.current_version = current_version
-        self.ignored = False
         self.no_version_info = False
         self.up_to_date = False
         self.newer = []
         self.older = []
         self.bad_versions = []
+
+    def __str__(self):
+        return 'Report for "%s"' % self.name
 
     def render_to_list(self, verbose=False):
         messages = []
@@ -62,13 +64,18 @@ class AnalyzerReport(object):
         messages = []
         up_to_date = []
         no_version_info = []
+        render_all = verbose
         for package in self.packages:
             messages += package.render_to_list(verbose)
+            if package.newer:
+                render_all = True
             if package.up_to_date:
                 up_to_date.append(package.name)
             if package.no_version_info:
+                render_all = True
                 no_version_info.append(package.name)
-        if up_to_date:
+
+        if render_all and up_to_date:
             messages.append('Up to date: %s\n' % ', '.join(up_to_date))
         if no_version_info:
             messages.append(
@@ -83,7 +90,6 @@ class AnalyzerReport(object):
 class Analyzer(object):
 
     def __init__(self, env, version_info, version_db):
-        self.verbose = False
         self.env = env
         self.version_info = version_info
         self.version_db = version_db
@@ -96,14 +102,12 @@ class Analyzer(object):
         self.up_to_date = []
         for package_name, current_version in self.env:
             current_version_str = str(current_version).lstrip('=')
-            p_report = report.add_package(package_name, current_version_str)
             if package_name in ignored_packages:
-                p_report.ignored = True
                 continue
+            p_report = report.add_package(package_name, current_version_str)
             data = self.version_info.get(package_name)
             if data is None:
                 p_report.no_version_info = True
-                self.env.add_error_package(package_name, 'No version information found')
                 continue
             newer = []
             older = []
@@ -119,10 +123,6 @@ class Analyzer(object):
                     # currently unreachable, as we allow parse_version() to return
                     # a LegacyVersion
                     p_report.bad_versions.append(str(pypi_release))
-                    self.env.add_error_package(
-                        package_name,
-                        'Bad version "{}" for {}'.format(pypi_release, package_name)
-                    )
             current_version = current_version_str
             try:
                 newer = self.version_db.filter_available_releases(

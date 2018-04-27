@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import argparse
+import re
 import sys
 
 from e_ood import Analyzer, EnvPackages, PackageVersionInfo, ReportedUpdateTypes, VersionDB
@@ -29,9 +30,10 @@ def go():
     else:
         env_packages = EnvPackages.from_active_env(verbose=args.verbose)
     if env_packages.packages_with_error:
-        print('Packages in virtualenv with error: %s' % '\n'.join(
-            env_packages.packages_with_error
-        ))
+        print('Packages in virtualenv with error:')
+        for p in env_packages.packages_with_error:
+            print('  %s' % p)
+        print()
 
     version_db = VersionDB(yaml_db=args.db)
 
@@ -41,17 +43,18 @@ def go():
         print('Bad value for --types', file=sys.stderr)
         sys.exit(1)
 
+    split_re = re.compile('( +| *, *)')
     with PackageVersionInfo(
         max_pypi_age_seconds=args.cache_time,
         pypi_cache_file=args.cache_file
     ) as version_info:
         analyzer = Analyzer(env_packages, version_info, version_db)
         report = analyzer.analyze(
-            ignored_packages=args.ignore.split(', '),
+            ignored_packages=split_re.split(args.ignore),
             types=types,
         )
 
-    print(report.render())
+    print(report.render(verbose=args.verbose))
 
 
 if __name__ == '__main__':

@@ -9,6 +9,8 @@
 
 ### Other changes
 
+* Analysis report rendering: Suppress verbose info unless verbose is specified
+  or there are also problems to report.
 * Ignore blank lines and "#" comments in freeze files.
 * `PackageVersionInfo` supports a context manager, to avoid having to call
   `save()` after looking up version information.
