@@ -81,6 +81,7 @@ class EnvPackages(object):
         def lister():
             for line in cls.get_process_output(process):
                 yield line.strip()
+            process.terminate()
 
         return cls._parse_package_list(*args, lister=lister, **kwargs)
 
