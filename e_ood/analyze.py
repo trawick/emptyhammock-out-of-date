@@ -128,12 +128,12 @@ class Analyzer(object):
                 newer = self.version_db.filter_available_releases(
                     package_name, current_version, newer, types,
                 )
-                for n in newer:
-                    p_report.newer.append(n)
-            except ValueError:
-                # The lack of an entry for the package will show up later, if there
-                # are indeed newer versions.
+            except ValueError:  # this package doesn't appear in page release database
+                # all newer releases will be reported, since the package release
+                # database can't filter out any
                 pass
+            for n in newer:
+                p_report.newer.append(n)
             if not newer:
                 p_report.up_to_date = True
                 self.up_to_date.append(package_name)

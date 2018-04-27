@@ -1,5 +1,10 @@
 # Changes and migration requirements
 
+## Version 0.1.39 (not released)
+
+* Analysis no longer fails to report packages that have newer versions but
+  which aren't listed in the package release database.
+
 ## Version 0.1.38
 
 ### Breaking changes

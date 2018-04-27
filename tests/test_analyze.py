@@ -17,7 +17,7 @@ class FakePackageVersionInfo(object):
     """
     This class mimics the PyPI representation (PackageVersionInfo), in order to
     * avoid hitting PyPI while running tests
-    * to test with fixed data
+    * test with fixed data
     """
     def __init__(self, version_info=None):
         self.version_info = version_info or {}
@@ -110,5 +110,17 @@ Up to date: non-lts-example
         analyzer = Analyzer(env, available, version_db)
         report = analyzer.analyze()
         expected_report = """Packages with PyPI or version problem: FOO
+"""
+        self.assertEqual(expected_report, report.render())
+
+    def test_package_not_in_release_database(self):
+        env = EnvPackages.from_freeze_file(StringIO('FOO==1.0.8'))
+        version_db = VersionDB(yaml_db=TEST_DB_NAME)
+        available = FakePackageVersionInfo.from_list('FOO', ['1.0.8', '1.0.9'])
+        analyzer = Analyzer(env, available, version_db)
+        report = analyzer.analyze()
+        expected_report = """FOO: 1.0.8
+Newer releases:
+  1.0.9: No information about package
 """
         self.assertEqual(expected_report, report.render())
