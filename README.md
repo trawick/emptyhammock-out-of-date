@@ -137,8 +137,7 @@ database.*
 from e_ood import Analyzer, EnvPackages, PackageVersionInfo, VersionDB
 
 env_packages = EnvPackages.from_freeze_file('production-freeze.txt')
-yaml_db = '/path/to/your/db.yaml'
-version_db = VersionDB(yaml_db=yaml_db)
+version_db = VersionDB(yaml_db='/path/to/your/db.yaml')
 with PackageVersionInfo() as version_info:
     analyzer = Analyzer(env_packages, version_info, version_db)
     result = analyzer.analyze()
