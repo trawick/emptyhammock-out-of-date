@@ -58,9 +58,9 @@ class AnalyzerReport(object):
         self.version_db = version_db
 
     def add_package(self, package_name, current_version):
-        pr = AnalyzerPackageReport(self.version_db, package_name, current_version)
-        self.packages.append(pr)
-        return pr
+        package_report = AnalyzerPackageReport(self.version_db, package_name, current_version)
+        self.packages.append(package_report)
+        return package_report
 
     def render(self, verbose=False):
         messages = []
@@ -134,8 +134,8 @@ class Analyzer(object):
                 # all newer releases will be reported, since the package release
                 # database can't filter out any
                 pass
-            for n in newer:
-                p_report.newer.append(n)
+            for version in newer:
+                p_report.newer.append(version)
             if not newer:
                 p_report.up_to_date = True
                 self.up_to_date.append(package_name)

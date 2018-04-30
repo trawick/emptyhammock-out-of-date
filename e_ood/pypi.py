@@ -27,8 +27,8 @@ class PackageVersionInfo(object):
             self.pypi_cache_file = pypi_cache_file
 
         try:
-            with open(self.pypi_cache_file, 'r') as f:
-                self.pypi_cache = json.load(f)
+            with open(self.pypi_cache_file, 'r') as cache_file:
+                self.pypi_cache = json.load(cache_file)
         except:  # noqa
             self.pypi_cache = {}
 
@@ -50,8 +50,8 @@ class PackageVersionInfo(object):
 
     def save(self):
         if self.pypi_cache_changed:
-            with open(self.pypi_cache_file, 'w') as f:
-                json.dump(self.pypi_cache, f)
+            with open(self.pypi_cache_file, 'w') as cache_file:
+                json.dump(self.pypi_cache, cache_file)
 
     def get(self, package_name):
         if package_name in self.pypi_cache:

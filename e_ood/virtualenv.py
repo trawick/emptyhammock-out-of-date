@@ -1,3 +1,4 @@
+"""Represent contents of virtualenv"""
 import io
 import re
 from subprocess import Popen, PIPE
@@ -76,9 +77,17 @@ class EnvPackages(object):
 
     @classmethod
     def from_active_env(cls, *args, **kwargs):
+        """
+        Create EnvPackages object representing the current virtualenv.
+
+        :param args: passed to EnvPackages constructor
+        :param kwargs: passed to EnvPackages constructor
+        :return: new EnvPackages object
+        """
         process = Popen(['pip', 'freeze'], stdout=PIPE)
 
         def lister():
+            """Helper function for reading from the current virtualenv"""
             for line in cls.get_process_output(process):
                 yield line.strip()
             process.terminate()
@@ -87,11 +96,22 @@ class EnvPackages(object):
 
     @classmethod
     def from_freeze_file(cls, freeze_file, *args, **kwargs):
+        """
+        Create EnvPackages object representing the virtualenv whose contents
+        were captured to the specified file (presumably via "pip freeze").
+
+        :param freeze_file: Path name to file or file-like object from which
+            "pip freeze" output may be read
+        :param args: passed to EnvPackages constructor
+        :param kwargs: passed to EnvPackages constructor
+        :return: new EnvPackages object
+        """
         readlines = getattr(freeze_file, "readlines", None)
         if not callable(readlines):
             freeze_file = io.open(freeze_file, encoding='utf-8')
 
         def lister():
+            """Helper function for reading from freeze files"""
             for line in freeze_file.readlines():
                 line = line.strip()
                 if re.search(r'^(#|$)', line):
@@ -105,12 +125,14 @@ class EnvPackages(object):
 
 
 class EnvPackagesIterator(object):
+    """Python iterator object for EnvPackages class"""
 
     def __init__(self, packages):
         self.packages = packages
         self.index = 0
 
     def __next__(self):
+        """Part of Python 3 iterator protocol """
         try:
             package = self.packages[self.index]
         except IndexError:
@@ -118,8 +140,10 @@ class EnvPackagesIterator(object):
         self.index += 1
         return package
 
-    def next(self):  # for Python 2
+    def next(self):
+        """Part of Python 2 iterator protocol """
         return self.__next__()
 
     def __iter__(self):
+        """Part of iterator protocol"""
         return self

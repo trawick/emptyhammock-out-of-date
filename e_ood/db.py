@@ -1,3 +1,4 @@
+""" Represent the user's database of version classifications. """
 import os
 import re
 
@@ -64,16 +65,27 @@ class ReportedUpdateTypes(object):
             setattr(self, k, value)
 
     def update(self, **kwargs):
+        """
+        Modify the types of new releases that should be displayed.
+        :param kwargs: ignore_XXX_releases=True|False
+            where XXX is "alpha_beta_rc" or "feature" or "compat" or "bug_fix"
+            or "security".  This call is only needed if a relatively odd
+            combination of release types should be identified.
+        :return:
+        """
         valid_flags = self.TYPE_TO_FLAGS['none'].keys()
-        for k, v in kwargs.items():
+        for k, value in kwargs.items():
             if k not in valid_flags:
                 raise ValueError('Invalid flag "%s" passed to update()' % k)
-            if type(v) != bool:
-                raise ValueError('Invalid value "%s" for flag "%s" passed to update()' % (v, k))
-            setattr(self, k, v)
+            if not isinstance(value, bool):
+                raise ValueError('Invalid value "%s" for flag "%s" passed to update()' % (value, k))
+            setattr(self, k, value)
 
 
 class VersionDB(object):
+    """
+    Represent the user's database of version classifications.
+    """
 
     MAPPINGS = (
         ('bug_fix_releases', 'Non-security bug fixes'),
@@ -98,10 +110,10 @@ class VersionDB(object):
         if callable(getattr(yaml_db, 'read', None)):
             yaml_contents = yaml_db.read()
         else:
-            with open(yaml_db) as f:
-                yaml_contents = f.read()
+            with open(yaml_db) as db_file:
+                yaml_contents = db_file.read()
 
-        self.db = yaml.load(
+        self.data = yaml.load(
             yaml_contents,
             # some version numbers, such as "2.0", look like float; disable
             # auto-conversion so that all version numbers are strings
@@ -109,12 +121,19 @@ class VersionDB(object):
         )
 
     def _get_entry(self, package_name):
-        entry = self.db.get(package_name, None)
+        entry = self.data.get(package_name, None)
         if not entry:
             raise ValueError('No definition for package "%s"' % package_name)
         return entry
 
     def get_changelog(self, package_name):
+        """
+        Return URL of changelog for specified package, if recorded.
+
+        :param package_name: package to check
+        :return: URL string if found, or None if package not in db or no
+            changelog for the package is in the db
+        """
         try:
             entry = self._get_entry(package_name)
         except ValueError:
@@ -122,6 +141,17 @@ class VersionDB(object):
         return entry.get('changelog_url', None) or None
 
     def classify_release(self, package_name, version):
+        """
+        Return human-readable string for the classification of the specified
+        version of the specified package.
+
+        :param package_name: package to check
+        :param version: version to check
+
+        :return: either string describing the classification, or error message
+            if the package wasn't found or if no information is available about
+            the version
+        """
         try:
             entry = self._get_entry(package_name)
         except ValueError:
@@ -132,6 +162,14 @@ class VersionDB(object):
         return 'No information about version'
 
     def is_security_release(self, package_name, versions):
+        """
+        Check if any of specified versions of specified package are security
+        releases.
+
+        :param package_name: name of package to check
+        :param versions: list of versions to check
+        :return: boolean
+        """
         if isinstance(versions, str):
             versions = [versions]
         entry = self._get_entry(package_name)
@@ -141,20 +179,29 @@ class VersionDB(object):
         return False
 
     def filter_available_releases(self, package_name, current_version, versions, types):
+        """
+        For a particular package + current_version + list of newer versions,
+        reduce the list of newer versions to those of interest according to
+        types.
+
+        :param package_name: name of Python package
+        :param current_version: version currently installed
+        :param versions: iterable of newer versions
+        :param types: instance of ReportedUpdateTypes, indicating which types
+            of newer releases should be reported
+        :return: list of the newer releases of interest according to types
+        """
         entry = self._get_entry(package_name)
 
         def _ignorable(version):
-            if version in entry['ignored_releases']:
-                return True
-            if types.ignore_feature_releases and version in entry['feature_releases']:
-                return True
-            if types.ignore_bug_fix_releases and version in entry['bug_fix_releases']:
-                return True
-            if types.ignore_security_releases and version in entry['security_releases']:
-                return True
-            if types.ignore_compat_releases and version in entry['compatibility_releases']:
-                return True
-            if types.ignore_alpha_beta_rc_releases and self.ALPHA_BETA_RC.match(version):
+            if any((
+                    version in entry['ignored_releases'],
+                    types.ignore_feature_releases and version in entry['feature_releases'],
+                    types.ignore_bug_fix_releases and version in entry['bug_fix_releases'],
+                    types.ignore_security_releases and version in entry['security_releases'],
+                    types.ignore_compat_releases and version in entry['compatibility_releases'],
+                    types.ignore_alpha_beta_rc_releases and self.ALPHA_BETA_RC.match(version)
+            )):
                 return True
 
             # If the current_version is an LTS release and the version being checked
