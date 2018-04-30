@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Command-line interface to out-of-date library"""
 
 from __future__ import print_function
 
@@ -9,7 +10,8 @@ import sys
 from e_ood import Analyzer, EnvPackages, PackageVersionInfo, ReportedUpdateTypes, VersionDB
 
 
-def go():
+def main():
+    """Parse arguments and analyze"""
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--cache-file',
@@ -31,8 +33,8 @@ def go():
         env_packages = EnvPackages.from_active_env(verbose=args.verbose)
     if env_packages.packages_with_error:
         print('Packages in virtualenv with error:')
-        for p in env_packages.packages_with_error:
-            print('  %s' % p)
+        for package in env_packages.packages_with_error:
+            print('  %s' % package)
         print()
 
     version_db = VersionDB(yaml_db=args.db)
@@ -58,4 +60,4 @@ def go():
 
 
 if __name__ == '__main__':
-    go()
+    main()

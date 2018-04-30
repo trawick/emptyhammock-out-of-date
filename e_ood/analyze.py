@@ -29,8 +29,10 @@ class AnalyzerPackageReport(object):
             ]
 
             messages.append('Newer releases:')
-            for n in newer:
-                messages.append('  %s: %s' % (n, self.version_db.classify_release(self.name, n)))
+            for release in newer:
+                messages.append('  %s: %s' % (
+                    release, self.version_db.classify_release(self.name, release)
+                ))
             changelog = self.version_db.get_changelog(self.name)
             if changelog:
                 messages.append('  Changelog: %s' % changelog)

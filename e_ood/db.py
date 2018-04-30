@@ -60,8 +60,8 @@ class ReportedUpdateTypes(object):
             ignore_args = self.TYPE_TO_FLAGS[types]
         except KeyError:
             raise ValueError('Invalid types "%s"' % types)
-        for k, v in ignore_args.items():
-            setattr(self, k, v)
+        for k, value in ignore_args.items():
+            setattr(self, k, value)
 
     def update(self, **kwargs):
         valid_flags = self.TYPE_TO_FLAGS['none'].keys()
@@ -92,9 +92,9 @@ class VersionDB(object):
         """
         if yaml_db is None:
             yaml_db = os.path.join(
-                    os.path.dirname(__file__),
-                    'db.yaml'
-                )
+                os.path.dirname(__file__),
+                'db.yaml'
+            )
         if callable(getattr(yaml_db, 'read', None)):
             yaml_contents = yaml_db.read()
         else:

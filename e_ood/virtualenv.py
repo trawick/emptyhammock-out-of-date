@@ -45,8 +45,8 @@ class EnvPackages(object):
                     break
                 yield line
         else:
-            with io.TextIOWrapper(process.stdout, encoding="utf-8") as f:
-                for line in f:
+            with io.TextIOWrapper(process.stdout, encoding="utf-8") as output:
+                for line in output:
                     yield line
 
     @classmethod
