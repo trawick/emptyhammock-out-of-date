@@ -15,8 +15,6 @@ if ! flake8 .; then
     exit 1
 fi
 
-if test "$1" = "pylint"; then
-    if ! pylint out_of_date.py e_ood; then
-        exit 1
-    fi
+if ! pylint out_of_date.py e_ood; then
+    exit 1
 fi

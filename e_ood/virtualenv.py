@@ -16,8 +16,7 @@ class EnvPackages(object):
         instance.
     """
 
-    def __init__(self, verbose=False):
-        self.verbose = verbose
+    def __init__(self):
         self.packages = []
         self.packages_with_error = set()
         self.error_messages = []
@@ -55,8 +54,6 @@ class EnvPackages(object):
         """
         self.packages_with_error.add(package_name)
         self.error_messages.append(problem)
-        if self.verbose:
-            print(problem)
 
     @staticmethod
     def _get_process_output(process):
@@ -72,9 +69,8 @@ class EnvPackages(object):
                     yield line
 
     @classmethod
-    def _parse_package_list(cls, *args, **kwargs):
-        lister = kwargs.pop('lister')
-        env_packages = EnvPackages(*args, **kwargs)
+    def _parse_package_list(cls, lister):
+        env_packages = EnvPackages()
         for line in lister():
             try:
                 package_name, current_version = line.split('==')
@@ -97,7 +93,7 @@ class EnvPackages(object):
         return env_packages
 
     @classmethod
-    def from_active_env(cls, *args, **kwargs):
+    def from_active_env(cls):
         """
         Create EnvPackages object representing the current virtualenv.
 
@@ -113,10 +109,10 @@ class EnvPackages(object):
                 yield line.strip()
             process.terminate()
 
-        return cls._parse_package_list(*args, lister=lister, **kwargs)
+        return cls._parse_package_list(lister)
 
     @classmethod
-    def from_freeze_file(cls, freeze_file, *args, **kwargs):
+    def from_freeze_file(cls, freeze_file):
         """
         Create EnvPackages object representing the virtualenv whose contents
         were captured to the specified file (presumably via "pip freeze").
@@ -140,12 +136,12 @@ class EnvPackages(object):
                 yield line
 
         try:
-            return cls._parse_package_list(*args, lister=lister, **kwargs)
+            return cls._parse_package_list(lister)
         finally:
             freeze_file.close()
 
 
-class EnvPackagesIterator(object):
+class EnvPackagesIterator(object):  # pylint: disable=too-few-public-methods
     """Python iterator object for EnvPackages class"""
 
     def __init__(self, packages):

@@ -28,9 +28,9 @@ def main():
     args = parser.parse_args()
 
     if args.freeze_output:
-        env_packages = EnvPackages.from_freeze_file(args.freeze_output, verbose=args.verbose)
+        env_packages = EnvPackages.from_freeze_file(args.freeze_output)
     else:
-        env_packages = EnvPackages.from_active_env(verbose=args.verbose)
+        env_packages = EnvPackages.from_active_env()
     if env_packages.packages_with_error:
         print('Packages in virtualenv with error:')
         for package in env_packages.packages_with_error:

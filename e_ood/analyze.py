@@ -9,8 +9,7 @@ class AnalyzerPackageReport(object):
     Report created for a particular package within the virtualenv being analyzed
     """
 
-    def __init__(self, version_db, package_name, current_version):
-        self.version_db = version_db
+    def __init__(self, package_name, current_version):
         self.name = package_name
         self.current_version = current_version
         self.no_version_info = False
@@ -22,17 +21,37 @@ class AnalyzerPackageReport(object):
     def __str__(self):
         return 'Report for "%s"' % self.name
 
-    def render_to_list(self, verbose=False):
+    def render(self, version_db, verbose=False):
+        """
+        Render this report (info on a particular package) to a string.
+
+        :param version_db: VersionDB object, for classifying releases
+        :param verbose: Include more than minimal information in the report
+        :return: the rendered report, in the form of a string
+        """
+        return '\n'.join(self.render_to_list(version_db, verbose))
+
+    def render_to_list(self, version_db, verbose=False):
         """
         Render this report (info on a particular package) to a list of strings,
         for easy consolidation into a report on the entire virtualenv.
+
+        :param version_db: VersionDB object, for classifying releases
         :param verbose: Include more than minimal information in the report
         :return: the rendered report, in the form of a list of strings
         """
         messages = []
 
+        def _header():
+            if not messages:
+                messages.append('%s: %s' % (self.name, self.current_version))
+
+        def _footer():
+            if messages:
+                messages.append('')
+
         if self.newer:
-            messages.append('%s: %s' % (self.name, self.current_version))
+            _header()
             newer = [
                 str(v)
                 for v in sorted(self.newer)
@@ -41,22 +60,25 @@ class AnalyzerPackageReport(object):
             messages.append('Newer releases:')
             for release in newer:
                 messages.append('  %s: %s' % (
-                    release, self.version_db.classify_release(self.name, release)
+                    release, version_db.classify_release(self.name, release)
                 ))
-            changelog = self.version_db.get_changelog(self.name)
+            changelog = version_db.get_changelog(self.name)
             if changelog:
                 messages.append('  Changelog: %s' % changelog)
 
+        if self.bad_versions:
+            _header()
+            messages.append('Unparsable versions on PyPI: %s' % ', '.join(self.bad_versions))
+
         if verbose and self.older:
-            if not self.newer:
-                messages.append('%s: %s' % (self.name, self.current_version))
+            _header()
             older = [
                 str(v)
                 for v in sorted(self.older)
             ]
             messages.append('Older: %s' % ', '.join(older))
-        if self.newer or (verbose and self.older):
-            messages.append('')
+
+        _footer()
 
         return messages
 
@@ -80,7 +102,7 @@ class AnalyzerReport(object):
         :return: new instance of AnalyzerPackageReport representing the
             analysis of that package
         """
-        package_report = AnalyzerPackageReport(self.version_db, package_name, current_version)
+        package_report = AnalyzerPackageReport(package_name, current_version)
         self.packages.append(package_report)
         return package_report
 
@@ -95,7 +117,7 @@ class AnalyzerReport(object):
         no_version_info = []
         render_all = verbose
         for package in self.packages:
-            messages += package.render_to_list(verbose)
+            messages += package.render_to_list(self.version_db, verbose)
             if package.newer:
                 render_all = True
             if package.up_to_date:
@@ -116,7 +138,7 @@ class AnalyzerReport(object):
         return '\n'.join(messages)
 
 
-class Analyzer(object):
+class Analyzer(object):  # pylint: disable=too-few-public-methods
     """
     Analyze a virtualenv based on current package versions, newer versions
     available from PyPI, and a categorization of those packages.
@@ -152,7 +174,6 @@ class Analyzer(object):
                 p_report.no_version_info = True
                 continue
             newer = []
-            older = []
             for pypi_release in data['releases'].keys():
                 # Add a tiny requirement on the format of the release strings.
                 # parse_version() doesn't care about the format, and will
@@ -166,7 +187,6 @@ class Analyzer(object):
                     newer.append(pypi_release)
                 elif pypi_release != current_version:
                     p_report.older.append(pypi_release)
-                    older.append(pypi_release)
             current_version = current_version_str
             try:
                 newer = self.version_db.filter_available_releases(

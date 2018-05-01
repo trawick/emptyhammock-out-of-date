@@ -56,6 +56,13 @@ class ReportedUpdateTypes(object):
     }
 
     def __init__(self, types=None):
+        # explicitly set these to help static analysis
+        self.ignore_alpha_beta_rc_releases = False
+        self.ignore_feature_releases = False
+        self.ignore_compat_releases = False
+        self.ignore_bug_fix_releases = False
+        self.ignore_security_releases = False
+
         types = types or 'bug'
         try:
             ignore_args = self.TYPE_TO_FLAGS[types]
@@ -66,7 +73,7 @@ class ReportedUpdateTypes(object):
 
     def update(self, **kwargs):
         """
-        Modify the types of new releases that should be displayed.
+        Modify the types of new releases that should be reported.
         :param kwargs: ignore_XXX_releases=True|False
             where XXX is "alpha_beta_rc" or "feature" or "compat" or "bug_fix"
             or "security".  This call is only needed if a relatively odd
@@ -80,6 +87,25 @@ class ReportedUpdateTypes(object):
             if not isinstance(value, bool):
                 raise ValueError('Invalid value "%s" for flag "%s" passed to update()' % (value, k))
             setattr(self, k, value)
+
+    def is_reported(self, type_string):
+        """
+        Is this version type reported?
+        :param type_string: 'alpha_beta_rc'|'feature'|'compat'|'bug_fix'|'security'
+        :return: True if a version of this type should be reported
+        """
+        if type_string not in (
+                'alpha_beta_rc', 'feature', 'compat', 'bug_fix', 'security'
+        ):
+            raise ValueError('Bad release type string "%s"' % type_string)
+
+        return (
+            type_string == 'alpha_beta_rc' and not self.ignore_alpha_beta_rc_releases or
+            type_string == 'feature' and not self.ignore_feature_releases or
+            type_string == 'compat' and not self.ignore_compat_releases or
+            type_string == 'bug_fix' and not self.ignore_bug_fix_releases or
+            type_string == 'security' and not self.ignore_security_releases
+        )
 
 
 class VersionDB(object):
@@ -194,15 +220,19 @@ class VersionDB(object):
         entry = self._get_entry(package_name)
 
         def _ignorable(version):
-            if any((
-                    version in entry['ignored_releases'],
-                    types.ignore_feature_releases and version in entry['feature_releases'],
-                    types.ignore_bug_fix_releases and version in entry['bug_fix_releases'],
-                    types.ignore_security_releases and version in entry['security_releases'],
-                    types.ignore_compat_releases and version in entry['compatibility_releases'],
-                    types.ignore_alpha_beta_rc_releases and self.ALPHA_BETA_RC.match(version)
-            )):
+            if version in entry['ignored_releases']:
                 return True
+
+            checks = (
+                ('feature', version in entry['feature_releases']),
+                ('bug_fix', version in entry['bug_fix_releases']),
+                ('security', version in entry['security_releases']),
+                ('compat', version in entry['compatibility_releases']),
+                ('alpha_beta_rc', self.ALPHA_BETA_RC.match(version))
+            )
+            for check, condition in checks:
+                if condition and not types.is_reported(check):
+                    return True
 
             # If the current_version is an LTS release and the version being checked
             # doesn't match, then it must be higher -- and we don't care about it.

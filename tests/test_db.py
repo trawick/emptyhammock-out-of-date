@@ -84,6 +84,7 @@ class TestDB(unittest.TestCase):
 
     def test_mode_security(self):
         types = ReportedUpdateTypes(types='security')
+        self.assertTrue(types.is_reported('security'))
         versions = self.db.filter_available_releases(
             'non-lts-example', '1.0.0', NON_LTS_EXAMPLE_VERSIONS, types
         )

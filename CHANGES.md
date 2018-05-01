@@ -1,5 +1,12 @@
 # Changes and migration requirements
 
+## Version 0.1.40 (unreleased)
+
+* Changes to `AnalyzerPackageReport` class interface
+* `ReportedUpdateTypes` now has `is_reported()` method
+* `EnvPackages` constructor and factory methods no longer have `verbose`
+  parameter, and the class no longer reports problems to standard output
+
 ## Version 0.1.39
 
 * Analysis no longer fails to report packages that have newer versions but
