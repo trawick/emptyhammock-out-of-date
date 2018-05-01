@@ -1,9 +1,13 @@
+""" Analyze contents of virtualenv with respect to newer available package versions """
 from pkg_resources import parse_version
 
 from .db import ReportedUpdateTypes
 
 
 class AnalyzerPackageReport(object):
+    """
+    Report created for a particular package within the virtualenv being analyzed
+    """
 
     def __init__(self, version_db, package_name, current_version):
         self.version_db = version_db
@@ -19,6 +23,12 @@ class AnalyzerPackageReport(object):
         return 'Report for "%s"' % self.name
 
     def render_to_list(self, verbose=False):
+        """
+        Render this report (info on a particular package) to a list of strings,
+        for easy consolidation into a report on the entire virtualenv.
+        :param verbose: Include more than minimal information in the report
+        :return: the rendered report, in the form of a list of strings
+        """
         messages = []
 
         if self.newer:
@@ -52,17 +62,34 @@ class AnalyzerPackageReport(object):
 
 
 class AnalyzerReport(object):
+    """
+    Report created for the virtualenv being analyzed; this is the type of
+    object returned from Analyzer.analyze().
+    """
 
     def __init__(self, version_db):
         self.packages = []
         self.version_db = version_db
 
     def add_package(self, package_name, current_version):
+        """
+        Add another package to the report
+        :param package_name: name of package
+        :param current_version: current version of the package in the
+            virtualenv
+        :return: new instance of AnalyzerPackageReport representing the
+            analysis of that package
+        """
         package_report = AnalyzerPackageReport(self.version_db, package_name, current_version)
         self.packages.append(package_report)
         return package_report
 
     def render(self, verbose=False):
+        """
+        Create a printable report of the analysis results
+        :param verbose: Include more than minimal information in the report
+        :return: report string
+        """
         messages = []
         up_to_date = []
         no_version_info = []
@@ -90,6 +117,10 @@ class AnalyzerReport(object):
 
 
 class Analyzer(object):
+    """
+    Analyze a virtualenv based on current package versions, newer versions
+    available from PyPI, and a categorization of those packages.
+    """
 
     def __init__(self, env, version_info, version_db):
         self.env = env
@@ -98,6 +129,15 @@ class Analyzer(object):
         self.up_to_date = []
 
     def analyze(self, ignored_packages=None, types=None):
+        """
+        Analyze the virtualenv, and return an AnalyzerReport.
+
+        :param ignored_packages: iterable of names of packages that won't be
+            analyzed
+        :param types: ReportedUpdateTypes instance, to decide which types of
+            newer package versions are of interest
+        :return: AnalyzerReport
+        """
         ignored_packages = ignored_packages or []
         types = types or ReportedUpdateTypes()
         report = AnalyzerReport(self.version_db)
@@ -114,17 +154,19 @@ class Analyzer(object):
             newer = []
             older = []
             for pypi_release in data['releases'].keys():
-                try:
-                    pypi_release = parse_version(pypi_release)
-                    if pypi_release > current_version:
-                        newer.append(pypi_release)
-                    elif pypi_release != current_version:
-                        p_report.older.append(pypi_release)
-                        older.append(pypi_release)
-                except:  # noqa
-                    # currently unreachable, as we allow parse_version() to return
-                    # a LegacyVersion
+                # Add a tiny requirement on the format of the release strings.
+                # parse_version() doesn't care about the format, and will
+                # return LegacyVersion for any sort of contents.  We need to
+                # be able to compare versions to find newer ones.
+                if not pypi_release[0].isdigit():
                     p_report.bad_versions.append(str(pypi_release))
+                    continue
+                pypi_release = parse_version(pypi_release)
+                if pypi_release > current_version:
+                    newer.append(pypi_release)
+                elif pypi_release != current_version:
+                    p_report.older.append(pypi_release)
+                    older.append(pypi_release)
             current_version = current_version_str
             try:
                 newer = self.version_db.filter_available_releases(

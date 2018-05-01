@@ -34,9 +34,25 @@ class EnvPackages(object):
         return EnvPackagesIterator(self.packages)
 
     def add(self, package_name, current_version):
+        """
+        Add package and the current version in use to the EnvPackages object.
+
+        :param package_name: name of the package
+        :param current_version: current version (string)
+        :return: nothing
+        """
         self.packages.append((package_name, current_version))
 
     def add_error_package(self, package_name, problem):
+        """
+        Record a package in the environment that has some sort of problem.
+        Example: version string is invalid or the "pip freeze" output is
+        garbled
+
+        :param package_name: name of the package
+        :param problem: string description of the problem
+        :return: nothing
+        """
         self.packages_with_error.add(package_name)
         self.error_messages.append(problem)
         if self.verbose:
