@@ -164,6 +164,14 @@ if output:
     print(output)
 ```
 
+Just see security fixes:
+
+```
+...
+result = analyzer.analyze(types=ReportedUpdateTypes('security')
+...
+```
+
 ## Support
 
 Please open Github issues for suggestions or suspected problems.  Even if I am
