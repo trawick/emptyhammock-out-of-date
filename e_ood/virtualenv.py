@@ -23,6 +23,11 @@ class EnvPackages(object):
         self.error_messages = []
 
     def get_errors(self):
+        """
+        Get printable output representing all the errors encountered while
+        parsing the packages/versions in the virtualenv.
+        :return: report string
+        """
         return '\n'.join(self.error_messages) + ('\n' if self.error_messages else '')
 
     def __iter__(self):
@@ -38,7 +43,7 @@ class EnvPackages(object):
             print(problem)
 
     @staticmethod
-    def get_process_output(process):
+    def _get_process_output(process):
         if sys.version_info[0] == 2:
             while True:
                 line = process.stdout.readline()
@@ -88,7 +93,7 @@ class EnvPackages(object):
 
         def lister():
             """Helper function for reading from the current virtualenv"""
-            for line in cls.get_process_output(process):
+            for line in cls._get_process_output(process):
                 yield line.strip()
             process.terminate()
 

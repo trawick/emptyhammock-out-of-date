@@ -1,3 +1,4 @@
+""" Provide access to versions available in the package repository. """
 import json
 import logging
 import os
@@ -8,7 +9,7 @@ import requests
 import e_ood
 
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 class PackageVersionInfo(object):
@@ -29,8 +30,18 @@ class PackageVersionInfo(object):
         try:
             with open(self.pypi_cache_file, 'r') as cache_file:
                 self.pypi_cache = json.load(cache_file)
+        except IOError:
+            # This might not simply be file-not-found.  Try to deal with the
+            # different errors appropriately in a Py2/Py3 + lint-safe way.
+            # For Python 3 only, just check for FileNotFoundError.
+            if not os.path.exists(self.pypi_cache_file):
+                self.pypi_cache = {}
+            else:
+                LOGGER.exception('Could not read PyPI cache file "%s"', self.pypi_cache_file)
+                raise
         except:  # noqa
-            self.pypi_cache = {}
+            LOGGER.exception('Could not parse PyPI cache file "%s"', self.pypi_cache_file)
+            raise
 
         self.pypi_cache_changed = False
         request_headers = {
@@ -49,11 +60,26 @@ class PackageVersionInfo(object):
             self.save()
 
     def save(self):
+        """
+        Save the PyPI cache if it was modified.
+
+        This call is appropriate if you don't use the PackageVersionInfo
+        context manager, which will call this method automatically.
+
+        :return: nothing
+        """
         if self.pypi_cache_changed:
             with open(self.pypi_cache_file, 'w') as cache_file:
                 json.dump(self.pypi_cache, cache_file)
 
     def get(self, package_name):
+        """
+        Return PyPI data for the specified package.  It may come from the
+        cache.
+
+        :param package_name: name of package to look up
+        :return: dictionary of data from PyPI
+        """
         if package_name in self.pypi_cache:
             retrieved = self.pypi_cache[package_name].get('retrieved')
             out_of_date = \
@@ -67,7 +93,7 @@ class PackageVersionInfo(object):
             url = 'https://pypi.python.org/pypi/%s/json' % package_name
             result = self.pypi_session.get(url)
             if result.status_code not in (200, 404):
-                logger.error(
+                LOGGER.error(
                     'Received status code %s looking up package "%s"',
                     result.status_code, package_name
                 )
