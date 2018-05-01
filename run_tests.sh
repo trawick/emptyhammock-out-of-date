@@ -1,6 +1,6 @@
 #!/bin/sh
 
-MIN_COVERAGE=64
+MIN_COVERAGE=94
 
 if ! coverage run -m unittest discover; then
     exit 1

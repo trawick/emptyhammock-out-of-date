@@ -32,7 +32,7 @@ class Test(unittest.TestCase):
             text=json.dumps(data))
 
     @requests_mock.Mocker()
-    def test_lookup(self, m):
+    def test_successful_lookup(self, m):
         self.setup_response(m, self.test_package, ['1.0.1', '1.0.2', '1.0.3'])
         pvi = PackageVersionInfo(
             pypi_cache_file=self.cache_file
@@ -47,6 +47,16 @@ class Test(unittest.TestCase):
         self.setup_response(m, self.test_package, ['2.0.1', '2.0.2', '2.0.3'])
         x = pvi.get(self.test_package)
         self.assertEqual({'1.0.1', '1.0.2', '1.0.3'}, set(x['releases'].keys()))
+
+    @requests_mock.Mocker()
+    def test_pypi_failure(self, m):
+        m.get(
+            'https://pypi.python.org/pypi/%s/json' % self.test_package,
+            text='gobble', status_code=500)
+        pvi = PackageVersionInfo(
+            pypi_cache_file=self.cache_file
+        )
+        self.assertIsNone(pvi.get(self.test_package))
 
     @requests_mock.Mocker()
     def test_context_manager_normal_path(self, m):
@@ -71,3 +81,14 @@ class Test(unittest.TestCase):
         except RuntimeError:
             pass
         assert not os.path.exists(self.cache_file)
+
+    def test_default_cache_file(self):
+        pvi = PackageVersionInfo()
+        self.assertIn('eood.json', pvi.pypi_cache_file)
+
+    def test_corrupted_cache_file(self):
+        with open(self.cache_file, 'w') as cache_file:
+            cache_file.write('asdasdfasdf\n')
+
+        with self.assertRaises(json.decoder.JSONDecodeError):
+            PackageVersionInfo(pypi_cache_file=self.cache_file)
