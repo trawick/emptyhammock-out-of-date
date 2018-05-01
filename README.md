@@ -101,6 +101,9 @@ an authorized client.
 * Python: 2.7.recent, 3.5, 3.6, and 3.7 are supported.
 * `Requests` and `PyYAML`
 
+*Python 2.7 support will be dropped sooner rather than later.  It is a
+colossal waste of time.*
+
 ## Installation
 
 `emptyhammock-out-of-date` is not currently on PyPI, so it is installed from
