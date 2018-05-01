@@ -2,6 +2,16 @@
 
 [![Build Status](https://travis-ci.org/trawick/emptyhammock-out-of-date.svg?branch=master)](https://travis-ci.org/trawick/emptyhammock-out-of-date)
 
+## Target audience
+
+Your team carefully tracks the versions of packages in your production virtualenvs
+and assesses new releases of those packages to determine if, and how quickly, you
+should upgrade.
+
+This is not an instant solution for identifying vulnerabilities in your virtualenvs,
+though you could use this library to build such a solution.  The distinction is that,
+in general, the users of this library assess new releases.
+
 ## Synopsis
 
 This package assists you with
@@ -11,10 +21,13 @@ This package assists you with
 * Recording your determination of the criticality of the upgrade to that package.
 * Reporting the packages in your virtualenv that need to be updated, and why.
 
-## Target audience
+You can use the package in contexts such as
 
-You carefully track the versions of packages in your production virtualenvs and assess new
-releases of those packages to determine if, and how quickly, you should upgrade.
+* From your development environment, perhaps using the bundled command-line program
+* From a maintenance bot that periodically pulls "pip freeze" reports from your
+  production environments
+* From your CI tasks, examining the virtualenv in new Docker images and triggering a
+  failure when the image is missing a critical update
 
 ## Information used to analyze your virtualenv
 
@@ -101,8 +114,8 @@ an authorized client.
 * Python: 2.7.recent, 3.5, 3.6, and 3.7 are supported.
 * `Requests` and `PyYAML`
 
-*Python 2.7 support will be dropped sooner rather than later.  It is a
-colossal waste of time.*
+*Python 2.7 support will be dropped as soon as I update a few remaining
+environments.*
 
 ## Installation
 
