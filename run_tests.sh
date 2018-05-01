@@ -6,7 +6,10 @@ if ! coverage run -m unittest discover; then
     exit 1
 fi
 
-coverage report -m --fail-under ${MIN_COVERAGE} || (echo 'FAILED!' 1>&2 ; exit 1)
+if ! coverage report -m --fail-under ${MIN_COVERAGE}; then
+    echo 'FAILED!' 1>&2
+    exit 1
+fi
 
 if ! flake8 .; then
     exit 1
