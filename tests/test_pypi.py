@@ -90,5 +90,5 @@ class Test(unittest.TestCase):
         with open(self.cache_file, 'w') as cache_file:
             cache_file.write('asdasdfasdf\n')
 
-        with self.assertRaises(json.decoder.JSONDecodeError):
+        with self.assertRaises(ValueError):
             PackageVersionInfo(pypi_cache_file=self.cache_file)
