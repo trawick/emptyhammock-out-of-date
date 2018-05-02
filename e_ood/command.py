@@ -26,6 +26,12 @@ def main(args):
     parser.add_argument('freeze_output', nargs='?')
     args = parser.parse_args(args)
 
+    try:
+        types = ReportedUpdateTypes(types=args.types)
+    except ValueError:
+        print('Bad value for --types', file=sys.stderr)
+        sys.exit(1)
+
     if args.freeze_output:
         env_packages = EnvPackages.from_freeze_file(args.freeze_output)
     else:
@@ -36,12 +42,6 @@ def main(args):
             print('  %s' % package, file=sys.stderr)
 
     version_db = VersionDB(yaml_db=args.db)
-
-    try:
-        types = ReportedUpdateTypes(types=args.types)
-    except ValueError:
-        print('Bad value for --types', file=sys.stderr)
-        sys.exit(1)
 
     split_re = re.compile(r'( +| *, *)')
     with PackageVersionInfo(
