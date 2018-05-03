@@ -9,6 +9,8 @@ from six import StringIO
 
 from e_ood.command import main
 
+PY2 = sys.version_info[0] == 2
+
 
 # https://stackoverflow.com/questions/4219717/how-to-assert-output-with-nosetest-unittest-in-python
 @contextmanager
@@ -28,6 +30,8 @@ class TestImplementation(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.mkdtemp()
         self.freeze_file = os.path.join(self.temp_dir, 'pip_freeze.out')
+        if PY2:
+            self.assertRegex = self.assertRegexpMatches
 
     def tearDown(self):
         shutil.rmtree(self.temp_dir)
@@ -51,6 +55,6 @@ class TestImplementation(unittest.TestCase):
                 self.freeze_file
             ])
         self.assertEqual('', out.getvalue())
-        self.assertRegexpMatches(
+        self.assertRegex(
             err.getvalue().replace('\n', ' '), r'with error:.*foobar'
         )
