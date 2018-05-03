@@ -3,7 +3,7 @@ import unittest
 
 from six import StringIO
 
-from e_ood import Analyzer, EnvPackages, VersionDB
+from e_ood import Analyzer, EnvPackages, PackageVersionClassifications
 
 
 TEST_DB_NAME = os.path.join(os.path.dirname(__file__), 'test_db.yaml')
@@ -42,7 +42,7 @@ class TestAnalyze(unittest.TestCase):
 
     def test_lts(self):
         env = EnvPackages.from_freeze_file(StringIO('d===1.11.5'))
-        version_db = VersionDB(yaml_db=TEST_DB_NAME)
+        version_db = PackageVersionClassifications(yaml_db=TEST_DB_NAME)
         available = FakePackageVersionInfo({
             'd': {
                 'releases': {
@@ -66,7 +66,7 @@ Newer releases:
 
     def test_report_older(self):
         env = EnvPackages.from_freeze_file(StringIO('non-lts-example==1.0.7'))
-        version_db = VersionDB(yaml_db=TEST_DB_NAME)
+        version_db = PackageVersionClassifications(yaml_db=TEST_DB_NAME)
         available = FakePackageVersionInfo.from_list('non-lts-example', NON_LTS_EXAMPLE_VERSIONS)
         analyzer = Analyzer(env, available, version_db)
         report = analyzer.analyze()
@@ -88,7 +88,7 @@ Older: 1.0.1, 1.0.2, 1.0.3, 1.0.4, 1.0.5, 1.0.6, 1.0.7a1, 1.0.7b2
 
     def test_report_ignore_all(self):
         env = EnvPackages.from_freeze_file(StringIO('non-lts-example==1.0.7'))
-        version_db = VersionDB(yaml_db=TEST_DB_NAME)
+        version_db = PackageVersionClassifications(yaml_db=TEST_DB_NAME)
         available = FakePackageVersionInfo.from_list('non-lts-example', NON_LTS_EXAMPLE_VERSIONS)
         analyzer = Analyzer(env, available, version_db)
         report = analyzer.analyze(
@@ -98,7 +98,7 @@ Older: 1.0.1, 1.0.2, 1.0.3, 1.0.4, 1.0.5, 1.0.6, 1.0.7a1, 1.0.7b2
 
     def test_report_no_newer(self):
         env = EnvPackages.from_freeze_file(StringIO('non-lts-example==1.0.8'))
-        version_db = VersionDB(yaml_db=TEST_DB_NAME)
+        version_db = PackageVersionClassifications(yaml_db=TEST_DB_NAME)
         available = FakePackageVersionInfo.from_list('non-lts-example', NON_LTS_EXAMPLE_VERSIONS)
         analyzer = Analyzer(env, available, version_db)
         report = analyzer.analyze()
@@ -115,7 +115,7 @@ Up to date: non-lts-example
 
     def test_unknown_package(self):
         env = EnvPackages.from_freeze_file(StringIO('FOO==1.0.8'))
-        version_db = VersionDB(yaml_db=TEST_DB_NAME)
+        version_db = PackageVersionClassifications(yaml_db=TEST_DB_NAME)
         available = FakePackageVersionInfo()
         analyzer = Analyzer(env, available, version_db)
         report = analyzer.analyze()
@@ -125,7 +125,7 @@ Up to date: non-lts-example
 
     def test_package_not_in_release_database(self):
         env = EnvPackages.from_freeze_file(StringIO('FOO==1.0.8'))
-        version_db = VersionDB(yaml_db=TEST_DB_NAME)
+        version_db = PackageVersionClassifications(yaml_db=TEST_DB_NAME)
         available = FakePackageVersionInfo.from_list('FOO', ['1.0.8', '1.0.9'])
         analyzer = Analyzer(env, available, version_db)
         report = analyzer.analyze()

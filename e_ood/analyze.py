@@ -25,7 +25,7 @@ class AnalyzerPackageReport(object):
         """
         Render this report (info on a particular package) to a string.
 
-        :param version_db: VersionDB object, for classifying releases
+        :param version_db: PackageVersionClassifications object, for classifying releases
         :param verbose: Include more than minimal information in the report
         :return: the rendered report, in the form of a string
         """
@@ -36,7 +36,7 @@ class AnalyzerPackageReport(object):
         Render this report (info on a particular package) to a list of strings,
         for easy consolidation into a report on the entire virtualenv.
 
-        :param version_db: VersionDB object, for classifying releases
+        :param version_db: PackageVersionClassifications object, for classifying releases
         :param verbose: Include more than minimal information in the report
         :return: the rendered report, in the form of a list of strings
         """

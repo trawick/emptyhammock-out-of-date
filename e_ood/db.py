@@ -108,7 +108,7 @@ class ReportedUpdateTypes(object):
         )
 
 
-class VersionDB(object):
+class PackageVersionClassifications(object):
     """
     Represent the user's database of version classifications.
     """
@@ -139,7 +139,7 @@ class VersionDB(object):
             with open(yaml_db) as db_file:
                 yaml_contents = db_file.read()
 
-        self.data = yaml.load(
+        self._data = yaml.load(
             yaml_contents,
             # some version numbers, such as "2.0", look like float; disable
             # auto-conversion so that all version numbers are strings
@@ -147,7 +147,7 @@ class VersionDB(object):
         )
 
     def _get_entry(self, package_name):
-        entry = self.data.get(package_name, None)
+        entry = self._data.get(package_name, None)
         if not entry:
             raise ValueError('No definition for package "%s"' % package_name)
         return entry

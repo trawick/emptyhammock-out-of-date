@@ -6,7 +6,7 @@ import unittest
 
 from six import StringIO
 
-from e_ood import ReportedUpdateTypes, VersionDB
+from e_ood import ReportedUpdateTypes, PackageVersionClassifications
 
 
 TEST_DB_CONTENTS = open(
@@ -32,14 +32,14 @@ class TestHandlingOfDB(unittest.TestCase):
         shutil.rmtree(self.temp_dir)
 
     def test_yaml_db_default(self):
-        version_db = VersionDB()
+        version_db = PackageVersionClassifications()
         self.assertEqual(
             'https://github.com/mozilla/bleach/blob/master/CHANGES',
             version_db.get_changelog('bleach')
         )
 
     def test_yaml_db_object(self):
-        version_db = VersionDB(yaml_db=StringIO(TEST_DB_CONTENTS))
+        version_db = PackageVersionClassifications(yaml_db=StringIO(TEST_DB_CONTENTS))
         self.assertEqual(
             'https://docs.d.com/CHANGELOG.md',
             version_db.get_changelog('d')
@@ -49,7 +49,7 @@ class TestHandlingOfDB(unittest.TestCase):
         db_path = os.path.join(self.temp_dir, 'test.yaml')
         with open(db_path, 'w') as f:
             f.write(TEST_DB_CONTENTS)
-        version_db = VersionDB(yaml_db=db_path)
+        version_db = PackageVersionClassifications(yaml_db=db_path)
         self.assertEqual(
             'https://docs.d.com/CHANGELOG.md',
             version_db.get_changelog('d')
@@ -59,7 +59,7 @@ class TestHandlingOfDB(unittest.TestCase):
 class TestDB(unittest.TestCase):
 
     def setUp(self):
-        self.db = VersionDB(yaml_db=StringIO(TEST_DB_CONTENTS))
+        self.db = PackageVersionClassifications(yaml_db=StringIO(TEST_DB_CONTENTS))
 
     def test_bad_arg_recognition(self):
         with self.assertRaises(ValueError):

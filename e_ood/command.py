@@ -6,7 +6,7 @@ import argparse
 import re
 import sys
 
-from e_ood import Analyzer, EnvPackages, AvailablePackageVersions, ReportedUpdateTypes, VersionDB
+from e_ood import Analyzer, EnvPackages, AvailablePackageVersions, ReportedUpdateTypes, PackageVersionClassifications
 
 
 def main(args):
@@ -41,7 +41,7 @@ def main(args):
         for package in env_packages.packages_with_error:
             print('  %s' % package, file=sys.stderr)
 
-    version_db = VersionDB(yaml_db=args.db)
+    version_db = PackageVersionClassifications(yaml_db=args.db)
 
     split_re = re.compile(r'( +| *, *)')
     with AvailablePackageVersions(

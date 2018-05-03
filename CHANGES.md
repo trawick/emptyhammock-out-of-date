@@ -4,6 +4,7 @@
 
 ### Breaking changes
 
+* `VersionDB` renamed to `PackageVersionClassifications`
 * `PackageVersionInfo` renamed to `AvailablePackageVersions`; keyword args to
   the initializer were also renamed
 
