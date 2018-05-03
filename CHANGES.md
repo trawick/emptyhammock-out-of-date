@@ -2,6 +2,8 @@
 
 ## Version 0.1.40 (unreleased)
 
+* `PackageVersionInfo()` now has `logger` keyword arg, for overriding the
+  default logger
 * Changes to `AnalyzerPackageReport` class interface
 * `ReportedUpdateTypes` now has `is_reported()` method
 * `EnvPackages` constructor and factory methods no longer have `verbose`

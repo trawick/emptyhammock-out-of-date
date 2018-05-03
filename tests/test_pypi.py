@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import shutil
 import tempfile
@@ -90,5 +91,7 @@ class Test(unittest.TestCase):
         with open(self.cache_file, 'w') as cache_file:
             cache_file.write('asdasdfasdf\n')
 
+        logger = logging.getLogger(__name__)
+        logger.setLevel(logging.CRITICAL)
         with self.assertRaises(ValueError):
-            PackageVersionInfo(pypi_cache_file=self.cache_file)
+            PackageVersionInfo(pypi_cache_file=self.cache_file, logger=logger)

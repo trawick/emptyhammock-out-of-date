@@ -9,7 +9,7 @@ import requests
 import e_ood
 
 
-LOGGER = logging.getLogger(__name__)
+DEFAULT_LOGGER = logging.getLogger(__name__)
 
 
 class PackageVersionInfo(object):
@@ -17,7 +17,9 @@ class PackageVersionInfo(object):
     Provide information about versions available on PyPI
     """
 
-    def __init__(self, max_pypi_age_seconds=None, pypi_cache_file=None):
+    def __init__(self, max_pypi_age_seconds=None, pypi_cache_file=None, logger=None):
+        self.logger = logger or DEFAULT_LOGGER
+
         if max_pypi_age_seconds is None:
             max_pypi_age_seconds = 60 * 60 * 24
 
@@ -37,10 +39,10 @@ class PackageVersionInfo(object):
             if not os.path.exists(self.pypi_cache_file):
                 self.pypi_cache = {}
             else:
-                LOGGER.exception('Could not read PyPI cache file "%s"', self.pypi_cache_file)
+                self.logger.exception('Could not read PyPI cache file "%s"', self.pypi_cache_file)
                 raise
         except:  # noqa
-            LOGGER.exception('Could not parse PyPI cache file "%s"', self.pypi_cache_file)
+            self.logger.exception('Could not parse PyPI cache file "%s"', self.pypi_cache_file)
             raise
 
         self.pypi_cache_changed = False
@@ -93,7 +95,7 @@ class PackageVersionInfo(object):
             url = 'https://pypi.python.org/pypi/%s/json' % package_name
             result = self.pypi_session.get(url)
             if result.status_code not in (200, 404):
-                LOGGER.error(
+                self.logger.error(
                     'Received status code %s looking up package "%s"',
                     result.status_code, package_name
                 )
