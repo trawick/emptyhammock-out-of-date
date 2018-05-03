@@ -6,7 +6,10 @@ import argparse
 import re
 import sys
 
-from e_ood import Analyzer, EnvPackages, AvailablePackageVersions, ReportedUpdateTypes, PackageVersionClassifications
+from e_ood import (
+    Analyzer, EnvPackages, AvailablePackageVersions, ReportedUpdateTypes,
+    PackageVersionClassifications
+)
 
 
 def main(args):
