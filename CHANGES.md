@@ -4,19 +4,19 @@
 
 ### Breaking changes
 
-* `EnvPackages` renamed to `InstalledPackageVersions`
+* `EnvPackages` renamed to `InstalledPackageVersions`; constructor and factory
+  methods no longer have `verbose` parameter, and the class no longer reports
+  problems to standard output
 * `VersionDB` renamed to `PackageVersionClassifications`
 * `PackageVersionInfo` renamed to `AvailablePackageVersions`; keyword args to
   the initializer were also renamed
+* Changes to `AnalyzerPackageReport` class interface
 
 ### Other changes
 
 * `PackageVersionInfo()` now has `logger` keyword arg, for overriding the
   default logger
-* Changes to `AnalyzerPackageReport` class interface
 * `ReportedUpdateTypes` now has `is_reported()` method
-* `EnvPackages` constructor and factory methods no longer have `verbose`
-  parameter, and the class no longer reports problems to standard output
 
 ## Version 0.1.39
 
