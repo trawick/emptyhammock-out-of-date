@@ -7,7 +7,7 @@ import re
 import sys
 
 from e_ood import (
-    Analyzer, EnvPackages, AvailablePackageVersions, ReportedUpdateTypes,
+    Analyzer, InstalledPackageVersions, AvailablePackageVersions, ReportedUpdateTypes,
     PackageVersionClassifications
 )
 
@@ -36,9 +36,9 @@ def main(args):
         sys.exit(1)
 
     if args.freeze_output:
-        env_packages = EnvPackages.from_freeze_file(args.freeze_output)
+        env_packages = InstalledPackageVersions.from_freeze_file(args.freeze_output)
     else:
-        env_packages = EnvPackages.from_active_env()
+        env_packages = InstalledPackageVersions.from_active_env()
     if env_packages.packages_with_error:
         print('Packages in virtualenv with error:', file=sys.stderr)
         for package in env_packages.packages_with_error:

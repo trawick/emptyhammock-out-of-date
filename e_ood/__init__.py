@@ -5,4 +5,4 @@ __version__ = '0.1.40a1'
 from .analyze import Analyzer  # noqa
 from .db import ReportedUpdateTypes, PackageVersionClassifications  # noqa
 from .pypi import AvailablePackageVersions  # noqa
-from .virtualenv import EnvPackages  # noqa
+from .virtualenv import InstalledPackageVersions  # noqa

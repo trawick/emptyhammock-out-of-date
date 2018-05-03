@@ -7,7 +7,7 @@ import sys
 from pkg_resources import parse_version
 
 
-class EnvPackages(object):
+class InstalledPackageVersions(object):
     """
         Grok the packages/versions in the virtualenv and track any problems
         retrieving or understanding their versions.
@@ -30,11 +30,11 @@ class EnvPackages(object):
         return '\n'.join(self.error_messages) + ('\n' if self.error_messages else '')
 
     def __iter__(self):
-        return EnvPackagesIterator(self.packages)
+        return InstalledPackageVersionsIterator(self.packages)
 
     def add(self, package_name, current_version):
         """
-        Add package and the current version in use to the EnvPackages object.
+        Add package and the current version in use to the InstalledPackageVersions object.
 
         :param package_name: name of the package
         :param current_version: current version (string)
@@ -70,7 +70,7 @@ class EnvPackages(object):
 
     @classmethod
     def _parse_package_list(cls, lister):
-        env_packages = EnvPackages()
+        env_packages = InstalledPackageVersions()
         for line in lister():
             try:
                 package_name, current_version = line.split('==')
@@ -95,11 +95,11 @@ class EnvPackages(object):
     @classmethod
     def from_active_env(cls):
         """
-        Create EnvPackages object representing the current virtualenv.
+        Create InstalledPackageVersions object representing the current virtualenv.
 
-        :param args: passed to EnvPackages constructor
-        :param kwargs: passed to EnvPackages constructor
-        :return: new EnvPackages object
+        :param args: passed to InstalledPackageVersions constructor
+        :param kwargs: passed to InstalledPackageVersions constructor
+        :return: new InstalledPackageVersions object
         """
         process = Popen(['pip', 'freeze'], stdout=PIPE)
 
@@ -114,14 +114,14 @@ class EnvPackages(object):
     @classmethod
     def from_freeze_file(cls, freeze_file):
         """
-        Create EnvPackages object representing the virtualenv whose contents
+        Create InstalledPackageVersions object representing the virtualenv whose contents
         were captured to the specified file (presumably via "pip freeze").
 
         :param freeze_file: Path name to file or file-like object from which
             "pip freeze" output may be read
-        :param args: passed to EnvPackages constructor
-        :param kwargs: passed to EnvPackages constructor
-        :return: new EnvPackages object
+        :param args: passed to InstalledPackageVersions constructor
+        :param kwargs: passed to InstalledPackageVersions constructor
+        :return: new InstalledPackageVersions object
         """
         readlines = getattr(freeze_file, "readlines", None)
         if not callable(readlines):
@@ -141,8 +141,8 @@ class EnvPackages(object):
             freeze_file.close()
 
 
-class EnvPackagesIterator(object):  # pylint: disable=too-few-public-methods
-    """Python iterator object for EnvPackages class"""
+class InstalledPackageVersionsIterator(object):  # pylint: disable=too-few-public-methods
+    """Python iterator object for InstalledPackageVersions class"""
 
     def __init__(self, packages):
         self.packages = packages

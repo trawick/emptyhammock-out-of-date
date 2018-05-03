@@ -5,7 +5,7 @@ import unittest
 
 from six import StringIO
 
-from e_ood import EnvPackages
+from e_ood import InstalledPackageVersions
 
 
 class TestReadMechanisms(unittest.TestCase):
@@ -17,11 +17,11 @@ class TestReadMechanisms(unittest.TestCase):
         shutil.rmtree(self.temp_dir)
 
     def test_listing_from_readable(self):
-        env = EnvPackages.from_freeze_file(StringIO('a===1.0.0'))
+        env = InstalledPackageVersions.from_freeze_file(StringIO('a===1.0.0'))
         packages = [p for p, _ in env]
         self.assertEqual(['a'], packages)
 
-        env = EnvPackages.from_freeze_file(StringIO('a===1.0.0\nb===2.2.2\n'))
+        env = InstalledPackageVersions.from_freeze_file(StringIO('a===1.0.0\nb===2.2.2\n'))
         packages = [p for p, _ in env]
         self.assertEqual(['a', 'b'], packages)
 
@@ -32,12 +32,12 @@ class TestReadMechanisms(unittest.TestCase):
                 'a===1.0.0\n',
                 'b===2.2.2\n',
             ])
-        env = EnvPackages.from_freeze_file(freeze_file_name)
+        env = InstalledPackageVersions.from_freeze_file(freeze_file_name)
         packages = [p for p, _ in env]
         self.assertEqual(['a', 'b'], packages)
 
     def test_current_environment(self):
-        env = EnvPackages.from_active_env()
+        env = InstalledPackageVersions.from_active_env()
         packages = [p for p, _ in env]
         # there will be more, but at least this will be included
         self.assertIn('PyYAML', packages)
@@ -46,7 +46,7 @@ class TestReadMechanisms(unittest.TestCase):
 class TestVirtualenv(unittest.TestCase):
 
     def test_bad_line(self):
-        env = EnvPackages.from_freeze_file(
+        env = InstalledPackageVersions.from_freeze_file(
             StringIO('a===1.0.0\nxxx')
         )
         self.assertEqual(
@@ -58,7 +58,7 @@ class TestVirtualenv(unittest.TestCase):
         self.assertEqual(['a'], packages)
 
     def test_ignore_some_lines(self):
-        env = EnvPackages.from_freeze_file(
+        env = InstalledPackageVersions.from_freeze_file(
             StringIO('\n\n# foo bar \na===1.0.0\n# foo bar\n   #\n  \nxxx')
         )
         self.assertEqual(
@@ -73,7 +73,7 @@ class TestVirtualenv(unittest.TestCase):
 class TestIterator(unittest.TestCase):
 
     def setUp(self):
-        self.env = EnvPackages.from_freeze_file(
+        self.env = InstalledPackageVersions.from_freeze_file(
             StringIO('a==1.0.0\nb==2.0.0\nc==3.0.0\n')
         )
 
