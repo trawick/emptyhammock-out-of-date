@@ -6,7 +6,7 @@ import argparse
 import re
 import sys
 
-from e_ood import Analyzer, EnvPackages, PackageVersionInfo, ReportedUpdateTypes, VersionDB
+from e_ood import Analyzer, EnvPackages, AvailablePackageVersions, ReportedUpdateTypes, VersionDB
 
 
 def main(args):
@@ -44,9 +44,9 @@ def main(args):
     version_db = VersionDB(yaml_db=args.db)
 
     split_re = re.compile(r'( +| *, *)')
-    with PackageVersionInfo(
-        max_pypi_age_seconds=args.cache_time,
-        pypi_cache_file=args.cache_file
+    with AvailablePackageVersions(
+        max_cache_time_seconds=args.cache_time,
+        cache_file_path=args.cache_file
     ) as version_info:
         analyzer = Analyzer(env_packages, version_info, version_db)
         report = analyzer.analyze(

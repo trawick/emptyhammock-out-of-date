@@ -15,7 +15,7 @@ NON_LTS_EXAMPLE_VERSIONS = [
 
 class FakePackageVersionInfo(object):
     """
-    This class mimics the PyPI representation (PackageVersionInfo), in order to
+    This class mimics the PyPI representation (AvailablePackageVersions), in order to
     * avoid hitting PyPI while running tests
     * test with fixed data
     """

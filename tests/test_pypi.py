@@ -7,7 +7,7 @@ import unittest
 
 import requests_mock
 
-from e_ood.pypi import PackageVersionInfo
+from e_ood.pypi import AvailablePackageVersions
 
 
 class Test(unittest.TestCase):
@@ -35,13 +35,13 @@ class Test(unittest.TestCase):
     @requests_mock.Mocker()
     def test_successful_lookup(self, m):
         self.setup_response(m, self.test_package, ['1.0.1', '1.0.2', '1.0.3'])
-        pvi = PackageVersionInfo(
-            pypi_cache_file=self.cache_file
+        pvi = AvailablePackageVersions(
+            cache_file_path=self.cache_file
         )
         x = pvi.get(self.test_package)
         pvi.save()
-        pvi = PackageVersionInfo(
-            pypi_cache_file=self.cache_file
+        pvi = AvailablePackageVersions(
+            cache_file_path=self.cache_file
         )
         self.assertEqual({'1.0.1', '1.0.2', '1.0.3'}, set(x['releases'].keys()))
         # now it should be cached
@@ -54,8 +54,8 @@ class Test(unittest.TestCase):
         m.get(
             'https://pypi.python.org/pypi/%s/json' % self.test_package,
             text='gobble', status_code=500)
-        pvi = PackageVersionInfo(
-            pypi_cache_file=self.cache_file
+        pvi = AvailablePackageVersions(
+            cache_file_path=self.cache_file
         )
         self.assertIsNone(pvi.get(self.test_package))
 
@@ -63,8 +63,8 @@ class Test(unittest.TestCase):
     def test_context_manager_normal_path(self, m):
         assert not os.path.exists(self.cache_file)
         self.setup_response(m, self.test_package, ['1.0.1', '1.0.2', '1.0.3'])
-        with PackageVersionInfo(
-            pypi_cache_file=self.cache_file
+        with AvailablePackageVersions(
+            cache_file_path=self.cache_file
         ) as pvi:
             pvi.get(self.test_package)
         assert os.path.exists(self.cache_file)
@@ -74,8 +74,8 @@ class Test(unittest.TestCase):
         assert not os.path.exists(self.cache_file)
         self.setup_response(m, self.test_package, ['1.0.1', '1.0.2', '1.0.3'])
         try:
-            with PackageVersionInfo(
-                pypi_cache_file=self.cache_file
+            with AvailablePackageVersions(
+                cache_file_path=self.cache_file
             ) as pvi:
                 pvi.get(self.test_package)
                 raise RuntimeError("foo")
@@ -84,8 +84,8 @@ class Test(unittest.TestCase):
         assert not os.path.exists(self.cache_file)
 
     def test_default_cache_file(self):
-        pvi = PackageVersionInfo()
-        self.assertIn('eood.json', pvi.pypi_cache_file)
+        pvi = AvailablePackageVersions()
+        self.assertIn('eood.json', pvi._cache_file_path)
 
     def test_corrupted_cache_file(self):
         with open(self.cache_file, 'w') as cache_file:
@@ -94,4 +94,4 @@ class Test(unittest.TestCase):
         logger = logging.getLogger(__name__)
         logger.setLevel(logging.CRITICAL)
         with self.assertRaises(ValueError):
-            PackageVersionInfo(pypi_cache_file=self.cache_file, logger=logger)
+            AvailablePackageVersions(cache_file_path=self.cache_file, logger=logger)

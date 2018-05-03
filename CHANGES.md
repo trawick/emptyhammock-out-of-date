@@ -2,6 +2,13 @@
 
 ## Version 0.1.40 (unreleased)
 
+### Breaking changes
+
+* `PackageVersionInfo` renamed to `AvailablePackageVersions`; keyword args to
+  the initializer were also renamed
+
+### Other changes
+
 * `PackageVersionInfo()` now has `logger` keyword arg, for overriding the
   default logger
 * Changes to `AnalyzerPackageReport` class interface

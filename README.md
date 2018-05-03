@@ -150,11 +150,11 @@ database.*
 ## Using the API
 
 ```python
-from e_ood import Analyzer, EnvPackages, PackageVersionInfo, VersionDB
+from e_ood import Analyzer, EnvPackages, AvailablePackageVersions, VersionDB
 
 env_packages = EnvPackages.from_freeze_file('production-freeze.txt')
 version_db = VersionDB(yaml_db='/path/to/your/db.yaml')
-with PackageVersionInfo() as version_info:
+with AvailablePackageVersions() as version_info:
     analyzer = Analyzer(env_packages, version_info, version_db)
     result = analyzer.analyze()
 output = result.render()
