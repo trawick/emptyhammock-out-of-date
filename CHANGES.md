@@ -1,6 +1,6 @@
 # Changes and migration requirements
 
-## Version 0.1.40 (unreleased)
+## Version 0.2.0
 
 ### Breaking changes
 
@@ -14,7 +14,7 @@
 
 ### Other changes
 
-* `PackageVersionInfo()` now has `logger` keyword arg, for overriding the
+* `AvailablePackageVersions()` now has `logger` keyword arg, for overriding the
   default logger
 * `ReportedUpdateTypes` now has `is_reported()` method
 
