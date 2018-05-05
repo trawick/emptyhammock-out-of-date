@@ -1,6 +1,6 @@
 """Convenience import of API symbols from e_ood modules"""
-__version__ = '0.2.0'
-# !__version__ must be set on the second line, for setup.py!
+
+__version__ = '0.2.1a'
 
 from .analyze import Analyzer  # noqa
 from .db import ReportedUpdateTypes, PackageVersionClassifications  # noqa

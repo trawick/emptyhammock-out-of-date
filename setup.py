@@ -1,23 +1,31 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
 import os
+import re
 import sys
 
 from setuptools import setup
 
 # Importing the package to get the version fails if our
 # own requirements aren't available.
+version = None
 with open('e_ood/__init__.py') as f:
-    f.readline()
-    line_1 = f.readline()
-    _, _, VERSION = line_1.replace("'", "").strip().split(' ')
+    for line in f:
+        mo = re.match(r"^__version__ = '([^']+)'$", line)
+        if mo:
+            version = mo.group(1)
+if not version:
+    print('Could not find package version', file=sys.stderr)
+    sys.exit(1)
 
 if sys.argv[-1] == 'version':
-    print('Version: %s' % VERSION)
+    print('Version: %s' % version)
     sys.exit()
 
 if sys.argv[-1] == 'tag':
-    os.system("git tag -a %s -m 'version %s'" % (VERSION, VERSION))
+    os.system("git tag -a %s -m 'version %s'" % (version, version))
     os.system("git push --tags")
     sys.exit()
 
@@ -26,7 +34,7 @@ setup(
     packages=['e_ood'],
     include_package_data=True,
     license='Apache 2.0 License',
-    version=VERSION,
+    version=version,
     description='A Python app and library that analyzes "pip freeze" output',
     author='Emptyhammock Software and Services LLC',
     author_email='info@emptyhammock.com',

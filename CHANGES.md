@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## Version 0.2.1 (unreleased)
+
+* xxx
+
 ## Version 0.2.0
 
 ### Breaking changes
