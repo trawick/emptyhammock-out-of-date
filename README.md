@@ -150,7 +150,7 @@ database.*
 ## Using the API
 
 ```python
-from e_ood import (
+from e_out_of_date import (
     Analyzer, AvailablePackageVersions, InstalledPackageVersions, PackageVersionClassifications
 )
 

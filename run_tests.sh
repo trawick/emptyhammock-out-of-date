@@ -15,6 +15,6 @@ if ! flake8 .; then
     exit 1
 fi
 
-if ! pylint out_of_date.py e_ood; then
+if ! pylint out_of_date.py e_out_of_date; then
     exit 1
 fi
