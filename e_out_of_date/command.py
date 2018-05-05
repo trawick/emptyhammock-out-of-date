@@ -6,7 +6,7 @@ import argparse
 import re
 import sys
 
-from e_ood import (
+from e_out_of_date import (
     Analyzer, InstalledPackageVersions, AvailablePackageVersions, ReportedUpdateTypes,
     PackageVersionClassifications
 )

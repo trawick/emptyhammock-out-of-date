@@ -1,4 +1,4 @@
-"""Convenience import of API symbols from e_ood modules"""
+"""Convenience import of API symbols from e_out_of_date modules"""
 
 __version__ = '0.2.1a'
 

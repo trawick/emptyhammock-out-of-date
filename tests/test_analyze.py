@@ -3,7 +3,7 @@ import unittest
 
 from six import StringIO
 
-from e_ood import Analyzer, InstalledPackageVersions, PackageVersionClassifications
+from e_out_of_date import Analyzer, InstalledPackageVersions, PackageVersionClassifications
 
 
 TEST_DB_NAME = os.path.join(os.path.dirname(__file__), 'test_db.yaml')

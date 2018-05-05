@@ -6,7 +6,7 @@ import time
 
 import requests
 
-import e_ood
+import e_out_of_date
 
 
 DEFAULT_LOGGER = logging.getLogger(__name__)
@@ -47,7 +47,7 @@ class AvailablePackageVersions(object):
 
         self._cache_modified = False
         request_headers = {
-            'User-Agent': 'emptyhammock-ood %s' % e_ood.__version__,
+            'User-Agent': 'emptyhammock-ood %s' % e_out_of_date.__version__,
         }
         self._max_pypi_age_seconds = max_cache_time_seconds
         self._current_time_seconds = int(time.time())

@@ -7,7 +7,7 @@ import unittest
 
 import requests_mock
 
-from e_ood.pypi import AvailablePackageVersions
+from e_out_of_date.pypi import AvailablePackageVersions
 
 
 class Test(unittest.TestCase):

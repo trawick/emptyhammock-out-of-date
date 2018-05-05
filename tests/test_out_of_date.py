@@ -7,7 +7,7 @@ import unittest
 
 from six import StringIO
 
-from e_ood.command import main
+from e_out_of_date.command import main
 
 PY2 = sys.version_info[0] == 2
 

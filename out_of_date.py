@@ -3,7 +3,7 @@
 
 import sys
 
-from e_ood.command import main
+from e_out_of_date.command import main
 
 
 if __name__ == '__main__':

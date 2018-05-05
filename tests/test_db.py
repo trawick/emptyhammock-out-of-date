@@ -6,7 +6,7 @@ import unittest
 
 from six import StringIO
 
-from e_ood import ReportedUpdateTypes, PackageVersionClassifications
+from e_out_of_date import ReportedUpdateTypes, PackageVersionClassifications
 
 
 TEST_DB_CONTENTS = open(

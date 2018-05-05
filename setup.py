@@ -11,7 +11,7 @@ from setuptools import setup
 # Importing the package to get the version fails if our
 # own requirements aren't available.
 version = None
-with open('e_ood/__init__.py') as f:
+with open('e_out_of_date/__init__.py') as f:
     for line in f:
         mo = re.match(r"^__version__ = '([^']+)'$", line)
         if mo:
@@ -31,7 +31,7 @@ if sys.argv[-1] == 'tag':
 
 setup(
     name='emptyhammock_out_of_date',
-    packages=['e_ood'],
+    packages=['e_out_of_date'],
     include_package_data=True,
     license='Apache 2.0 License',
     version=version,

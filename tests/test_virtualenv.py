@@ -5,7 +5,7 @@ import unittest
 
 from six import StringIO
 
-from e_ood import InstalledPackageVersions
+from e_out_of_date import InstalledPackageVersions
 
 
 class TestReadMechanisms(unittest.TestCase):
