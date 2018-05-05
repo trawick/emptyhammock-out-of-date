@@ -2,7 +2,9 @@
 
 ## Version 0.2.1 (unreleased)
 
-* xxx
+### Breaking changes
+
+* Package renamed from `e_ood` to `e_out_of_date` for clarity
 
 ## Version 0.2.0
 
