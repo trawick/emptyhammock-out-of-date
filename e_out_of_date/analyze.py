@@ -150,6 +150,23 @@ class Analyzer(object):  # pylint: disable=too-few-public-methods
         self.version_db = version_db
         self.up_to_date = []
 
+    def _report_newer_versions_of_interest(
+            self, p_report, current_version, newer, types
+    ):
+        try:
+            newer = self.version_db.filter_available_releases(
+                p_report.name, current_version, newer, types,
+            )
+        except ValueError:  # this package doesn't appear in page release database
+            # all newer releases will be reported, since the package release
+            # database can't filter out any
+            pass
+        for version in newer:
+            p_report.newer.append(version)
+        if not newer:
+            p_report.up_to_date = True
+            self.up_to_date.append(p_report.name)
+
     def analyze(self, ignored_packages=None, types=None):
         """
         Analyze the virtualenv, and return an AnalyzerReport.
@@ -187,19 +204,9 @@ class Analyzer(object):  # pylint: disable=too-few-public-methods
                     newer.append(pypi_release)
                 elif pypi_release != current_version:
                     p_report.older.append(pypi_release)
-            current_version = current_version_str
-            try:
-                newer = self.version_db.filter_available_releases(
-                    package_name, current_version, newer, types,
-                )
-            except ValueError:  # this package doesn't appear in page release database
-                # all newer releases will be reported, since the package release
-                # database can't filter out any
-                pass
-            for version in newer:
-                p_report.newer.append(version)
-            if not newer:
-                p_report.up_to_date = True
-                self.up_to_date.append(package_name)
+
+            self._report_newer_versions_of_interest(
+                p_report, current_version_str, newer, types
+            )
 
         return report

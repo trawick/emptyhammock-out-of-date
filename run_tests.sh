@@ -11,7 +11,7 @@ if ! coverage report --fail-under ${MIN_COVERAGE}; then
     exit 1
 fi
 
-if ! flake8 .; then
+if ! flake8 --max-complexity 10 .; then
     exit 1
 fi
 
