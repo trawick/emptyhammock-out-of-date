@@ -3,7 +3,7 @@ requests==2.25.1
   certifi==2020.12.5
   chardet==3.0.4
   idna==2.6
-  urllib3==1.26.3
+  urllib3==1.26.4
 six==1.15.0
 flake8==3.5.0
    mccabe==0.6.1
@@ -11,7 +11,7 @@ flake8==3.5.0
    pyflakes==1.6.0
 tox==3.0.0
   pluggy==0.6.0
-  py==1.5.3
+  py==1.10.0
   virtualenv==15.2.0
 requests-mock==1.4.0
 coverage==4.5.1
