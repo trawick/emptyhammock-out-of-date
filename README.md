@@ -111,7 +111,7 @@ an authorized client.
 
 ## Dependencies
 
-* Python: 2.7.recent, 3.5, 3.6, and 3.7 are supported.
+* Python: 2.7.recent, 3.6, and 3.7 are supported.
 * `Requests` and `PyYAML`
 
 *Python 2.7 support will be dropped as soon as I update a few remaining

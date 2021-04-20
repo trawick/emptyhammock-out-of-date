@@ -4,6 +4,7 @@
 
 ### Breaking changes
 
+* Support for Python 3.5 dropped
 * Package renamed from `e_ood` to `e_out_of_date` for clarity
 
 ## Version 0.2.0
