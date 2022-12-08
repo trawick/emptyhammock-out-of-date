@@ -1,6 +1,6 @@
 PyYAML==5.4.1
 requests==2.25.1
-  certifi==2020.12.5
+  certifi==2022.12.7
   chardet==3.0.4
   idna==2.6
   urllib3==1.26.5
