@@ -7,6 +7,11 @@
 * Support for Python 3.5 dropped
 * Package renamed from `e_ood` to `e_out_of_date` for clarity
 
+### Other changes
+
+* Collapse long lists of newer versions by passing `max_newer_versions=N` to
+  `render` methods of `AnalyzerReport` or `AnalyzerPackageReport`.
+
 ## Version 0.2.0
 
 ### Breaking changes

@@ -134,3 +134,37 @@ Newer releases:
   1.0.9: No information about package
 """
         self.assertEqual(expected_report, report.render())
+
+    def test_suppress_most_newer_versions_from_report(self):
+        env = InstalledPackageVersions.from_freeze_file(StringIO('many-newer-versions==3.0.0'))
+        version_db = PackageVersionClassifications(yaml_db=TEST_DB_NAME)
+        available = FakePackageVersionInfo({
+            'many-newer-versions': {
+                'releases': {
+                    x: True for x in [
+                        "3.0.0",
+                        "3.0.1",
+                        "3.0.2",
+                        "3.0.3",
+                        "3.0.4",
+                        "3.0.5",
+                        "3.0.6",
+                        "3.0.7",
+                        "3.0.8",
+                        "3.0.9",
+                        "3.1.0"
+                    ]
+                }
+            }
+        })
+        analyzer = Analyzer(env, available, version_db)
+        report = analyzer.analyze()
+        expected_report = """many-newer-versions: 3.0.0
+Newer releases:
+  3.0.1: Non-security bug fixes
+  3.0.2: Non-security bug fixes
+  (more newer versions suppressed)
+  3.0.9: Non-security bug fixes
+  3.1.0: Non-security bug fixes
+"""
+        self.assertEqual(expected_report, report.render(max_newer_versions=4))

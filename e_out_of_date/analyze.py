@@ -1,4 +1,6 @@
 """ Analyze contents of virtualenv with respect to newer available package versions """
+import math
+
 from pkg_resources import parse_version
 
 from .db import ReportedUpdateTypes
@@ -21,23 +23,25 @@ class AnalyzerPackageReport(object):
     def __str__(self):
         return 'Report for "%s"' % self.name
 
-    def render(self, version_db, verbose=False):
+    def render(self, version_db, verbose=False, max_newer_versions=None):
         """
         Render this report (info on a particular package) to a string.
 
         :param version_db: PackageVersionClassifications object, for classifying releases
         :param verbose: Include more than minimal information in the report
+        :param max_newer_versions: Limit on newer versions shown for a package
         :return: the rendered report, in the form of a string
         """
-        return '\n'.join(self.render_to_list(version_db, verbose))
+        return '\n'.join(self.render_to_list(version_db, verbose, max_newer_versions))
 
-    def render_to_list(self, version_db, verbose=False):
+    def render_to_list(self, version_db, verbose=False, max_newer_versions=None):
         """
         Render this report (info on a particular package) to a list of strings,
         for easy consolidation into a report on the entire virtualenv.
 
         :param version_db: PackageVersionClassifications object, for classifying releases
         :param verbose: Include more than minimal information in the report
+        :param max_newer_versions: Limit on newer versions shown for a package
         :return: the rendered report, in the form of a list of strings
         """
         messages = []
@@ -57,11 +61,18 @@ class AnalyzerPackageReport(object):
                 for v in sorted(self.newer)
             ]
 
+            if max_newer_versions is not None and len(newer) > max_newer_versions:
+                num_versions_in_section = math.floor(max_newer_versions / 2)  # we might lose one
+                newer = newer[:num_versions_in_section] + [None] + newer[-num_versions_in_section:]
+
             messages.append('Newer releases:')
             for release in newer:
-                messages.append('  %s: %s' % (
-                    release, version_db.classify_release(self.name, release)
-                ))
+                if release is None:  # max_newer_versions suppression
+                    messages.append('  (more newer versions suppressed)')
+                else:
+                    messages.append('  %s: %s' % (
+                        release, version_db.classify_release(self.name, release)
+                    ))
             changelog = version_db.get_changelog(self.name)
             if changelog:
                 messages.append('  Changelog: %s' % changelog)
@@ -106,10 +117,11 @@ class AnalyzerReport(object):
         self.packages.append(package_report)
         return package_report
 
-    def render(self, verbose=False):
+    def render(self, verbose=False, max_newer_versions=None):
         """
         Create a printable report of the analysis results
         :param verbose: Include more than minimal information in the report
+        :param max_newer_versions: Limit on newer versions shown for a package
         :return: report string
         """
         messages = []
@@ -117,7 +129,7 @@ class AnalyzerReport(object):
         no_version_info = []
         render_all = verbose
         for package in self.packages:
-            messages += package.render_to_list(self.version_db, verbose)
+            messages += package.render_to_list(self.version_db, verbose, max_newer_versions)
             if package.newer:
                 render_all = True
             if package.up_to_date:
