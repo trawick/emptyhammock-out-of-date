@@ -11,6 +11,8 @@
 
 * Collapse long lists of newer versions by passing `max_newer_versions=N` to
   `render` methods of `AnalyzerReport` or `AnalyzerPackageReport`.
+* Add `ignore_pkg_resources_warnings` utility function for filtering out
+  warning PkgResourcesDeprecationWarning.
 
 ## Version 0.2.0
 

@@ -6,3 +6,4 @@ from .analyze import Analyzer  # noqa
 from .db import ReportedUpdateTypes, PackageVersionClassifications  # noqa
 from .pypi import AvailablePackageVersions  # noqa
 from .virtualenv import InstalledPackageVersions  # noqa
+from .util import ignore_pkg_resources_warnings  # noqa
