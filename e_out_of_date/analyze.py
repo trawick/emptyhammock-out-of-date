@@ -1,7 +1,7 @@
 """ Analyze contents of virtualenv with respect to newer available package versions """
 import math
 
-from pkg_resources import parse_version
+from packaging.version import parse, InvalidVersion
 
 from .db import ReportedUpdateTypes
 
@@ -204,14 +204,11 @@ class Analyzer(object):  # pylint: disable=too-few-public-methods
                 continue
             newer = []
             for pypi_release in data['releases'].keys():
-                # Add a tiny requirement on the format of the release strings.
-                # parse_version() doesn't care about the format, and will
-                # return LegacyVersion for any sort of contents.  We need to
-                # be able to compare versions to find newer ones.
-                if not pypi_release[0].isdigit():
+                try:
+                    pypi_release = parse(pypi_release)
+                except InvalidVersion:
                     p_report.bad_versions.append(str(pypi_release))
                     continue
-                pypi_release = parse_version(pypi_release)
                 if pypi_release > current_version:
                     newer.append(pypi_release)
                 elif pypi_release != current_version:

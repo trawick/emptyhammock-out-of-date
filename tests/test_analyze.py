@@ -41,7 +41,7 @@ class FakePackageVersionInfo(object):
 class TestAnalyze(unittest.TestCase):
 
     def test_lts(self):
-        env = InstalledPackageVersions.from_freeze_file(StringIO('d===1.11.5'))
+        env = InstalledPackageVersions.from_freeze_file(StringIO('d==1.11.5'))
         version_db = PackageVersionClassifications(yaml_db=TEST_DB_NAME)
         available = FakePackageVersionInfo({
             'd': {
@@ -166,5 +166,30 @@ Newer releases:
   (more newer versions suppressed)
   3.0.9: Non-security bug fixes
   3.1.0: Non-security bug fixes
+"""
+        self.assertEqual(expected_report, report.render(max_newer_versions=4))
+
+    def test_invalid_version(self):
+        env = InstalledPackageVersions.from_freeze_file(StringIO('sample==3.0.0'))
+
+        version_db = PackageVersionClassifications(yaml_db=TEST_DB_NAME)
+        available = FakePackageVersionInfo({
+            'sample': {
+                'releases': {
+                    x: True for x in [
+                        "2004d",
+                        "2.9.1",
+                        "3.0.0",
+                        "3.0.2",
+                    ]
+                }
+            }
+        })
+        analyzer = Analyzer(env, available, version_db)
+        report = analyzer.analyze()
+        expected_report = """sample: 3.0.0
+Newer releases:
+  3.0.2: No information about package
+Unparsable versions on PyPI: 2004d
 """
         self.assertEqual(expected_report, report.render(max_newer_versions=4))

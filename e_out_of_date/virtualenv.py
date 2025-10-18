@@ -4,7 +4,7 @@ import re
 from subprocess import Popen, PIPE
 import sys
 
-from pkg_resources import parse_version
+from packaging.version import parse, InvalidVersion
 
 
 class InstalledPackageVersions(object):
@@ -81,15 +81,14 @@ class InstalledPackageVersions(object):
                 )
                 continue
             try:
-                current_version = parse_version(current_version)
-                env_packages.add(package_name, current_version)
-            except ValueError:
-                # unreachable, as parse_version() will create a LegacyVersion
-                # with any sort of junk for the string
+                current_version = parse(current_version)
+            except InvalidVersion:
                 env_packages.add_error_package(
                     package_name,
                     'Bad version "%s" for %s' % (current_version, package_name)
                 )
+            else:
+                env_packages.add(package_name, current_version)
         return env_packages
 
     @classmethod

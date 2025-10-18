@@ -1,14 +1,12 @@
 """ Implementation of out_of_date.py command """
 
-from __future__ import print_function
-
 import argparse
 import re
 import sys
 
 from e_out_of_date import (
     Analyzer, InstalledPackageVersions, AvailablePackageVersions, ReportedUpdateTypes,
-    PackageVersionClassifications, ignore_pkg_resources_warnings
+    PackageVersionClassifications
 )
 
 
@@ -28,8 +26,6 @@ def main(args):
                         action='store_true')
     parser.add_argument('freeze_output', nargs='?')
     args = parser.parse_args(args)
-
-    ignore_pkg_resources_warnings()
 
     try:
         types = ReportedUpdateTypes(types=args.types)

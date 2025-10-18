@@ -17,11 +17,11 @@ class TestReadMechanisms(unittest.TestCase):
         shutil.rmtree(self.temp_dir)
 
     def test_listing_from_readable(self):
-        env = InstalledPackageVersions.from_freeze_file(StringIO('a===1.0.0'))
+        env = InstalledPackageVersions.from_freeze_file(StringIO('a==1.0.0'))
         packages = [p for p, _ in env]
         self.assertEqual(['a'], packages)
 
-        env = InstalledPackageVersions.from_freeze_file(StringIO('a===1.0.0\nb===2.2.2\n'))
+        env = InstalledPackageVersions.from_freeze_file(StringIO('a==1.0.0\nb==2.2.2\n'))
         packages = [p for p, _ in env]
         self.assertEqual(['a', 'b'], packages)
 
@@ -29,8 +29,8 @@ class TestReadMechanisms(unittest.TestCase):
         freeze_file_name = os.path.join(self.temp_dir, 'frozen.txt')
         with open(freeze_file_name, 'w') as f:
             f.writelines([
-                'a===1.0.0\n',
-                'b===2.2.2\n',
+                'a==1.0.0\n',
+                'b==2.2.2\n',
             ])
         env = InstalledPackageVersions.from_freeze_file(freeze_file_name)
         packages = [p for p, _ in env]
@@ -47,7 +47,7 @@ class TestVirtualenv(unittest.TestCase):
 
     def test_bad_line(self):
         env = InstalledPackageVersions.from_freeze_file(
-            StringIO('a===1.0.0\nxxx')
+            StringIO('a==1.0.0\nxxx')
         )
         self.assertEqual(
             {'xxx'},
@@ -59,7 +59,7 @@ class TestVirtualenv(unittest.TestCase):
 
     def test_ignore_some_lines(self):
         env = InstalledPackageVersions.from_freeze_file(
-            StringIO('\n\n# foo bar \na===1.0.0\n# foo bar\n   #\n  \nxxx')
+            StringIO('\n\n# foo bar \na==1.0.0\n# foo bar\n   #\n  \nxxx')
         )
         self.assertEqual(
             {'xxx'},

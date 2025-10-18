@@ -1,5 +1,13 @@
 # Changes and migration requirements
 
+## Version 0.3.0
+
+### Breaking changes
+
+* Only supports Python >= 3.10
+* Requires ``packaging`` package
+* Removed `ignore_pkg_resources_warnings` utility function
+
 ## Version 0.2.1
 
 ### Breaking changes
