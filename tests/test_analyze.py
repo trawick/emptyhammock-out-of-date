@@ -191,5 +191,6 @@ Newer releases:
 Newer releases:
   3.0.2: No information about package
 Unparsable versions on PyPI: 2004d
+Older: 2.9.1
 """
-        self.assertEqual(expected_report, report.render(max_newer_versions=4))
+        self.assertEqual(expected_report, report.render(max_newer_versions=4, verbose=True))

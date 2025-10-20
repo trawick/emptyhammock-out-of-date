@@ -77,7 +77,7 @@ class AnalyzerPackageReport(object):
             if changelog:
                 messages.append('  Changelog: %s' % changelog)
 
-        if self.bad_versions:
+        if verbose and self.bad_versions:
             _header()
             messages.append('Unparsable versions on PyPI: %s' % ', '.join(self.bad_versions))
 

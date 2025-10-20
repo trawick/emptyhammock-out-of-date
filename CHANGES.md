@@ -1,5 +1,10 @@
 # Changes and migration requirements
 
+## Version 0.3.1
+
+* Bad package versions on PyPI are reported only if `verbose=True` is passed
+  to the `AnalyzerPackageReport` render method.
+
 ## Version 0.3.0
 
 ### Breaking changes
